@@ -151,6 +151,22 @@
                     <span>🏫</span>
                     <span>Ra Sân Trường</span>
                 </button>
+                <button type="button" onclick="window.toggleFlagCeremony()" id="flagCeremonyBtn" class="game-btn glass-panel rounded-xl px-2.5 py-1.5 text-[11px] font-extrabold text-yellow-200 bg-red-700/85 hover:bg-red-600 flex items-center gap-1 border-yellow-400/60 shadow" title="Bật/Tắt Lễ Chào Cờ Toàn Trường">
+                    <span>🇻🇳</span>
+                    <span id="flagCeremonyLabel">Chào Cờ</span>
+                </button>
+                <button type="button" onclick="window.enterMathClass12()" class="game-btn glass-panel rounded-xl px-2.5 py-1.5 text-[11px] font-extrabold text-cyan-200 bg-indigo-900/85 hover:bg-indigo-800 flex items-center gap-1 border-cyan-400/40 shadow" title="Vào Lớp 12 Đang Học Toán">
+                    <span>📐</span>
+                    <span>Lớp 12 Học Toán</span>
+                </button>
+                <button type="button" onclick="window.fastTravelTo('campus', 515, 1430, 'Sân Bóng Đá THPT Ninh Giang')" class="game-btn glass-panel rounded-xl px-2.5 py-1.5 text-[11px] font-extrabold text-emerald-200 bg-emerald-900/85 hover:bg-emerald-800 flex items-center gap-1 border-emerald-400/40 shadow" title="Ra Sân Bóng Đá">
+                    <span>⚽</span>
+                    <span class="hidden sm:inline">Sân Bóng</span>
+                </button>
+                <button type="button" onclick="window.fastTravelTo('campus', 430, 495, 'Khu Nhà Vệ Sinh Học Đường (WC Nam / Nữ)')" class="game-btn glass-panel rounded-xl px-2.5 py-1.5 text-[11px] font-bold text-sky-200 flex items-center gap-1 hover:bg-slate-800/80 border-sky-400/30" title="Tới Khu Nhà Vệ Sinh">
+                    <span>🚻</span>
+                    <span class="hidden sm:inline">WC</span>
+                </button>
                 <button type="button" onclick="window.cycleTimeOfDay()" id="timeBtn" class="game-btn glass-panel rounded-xl px-2.5 py-1.5 text-[11px] font-bold text-amber-200 flex items-center gap-1 hover:bg-slate-800/80">
                     <span id="timeIcon">☀️</span>
                     <span id="timeLabel">Ban Ngày</span>
@@ -596,6 +612,38 @@
                         <div class="text-[11px] text-slate-300">Ngồi bàn học, lên bảng giải đố cùng Cô Diệp & Thầy Toàn</div>
                     </div>
                 </button>
+
+                <button type="button" onclick="window.enterMathClass12()" class="game-btn text-left p-3 rounded-2xl bg-cyan-500/20 hover:bg-cyan-500/35 border border-cyan-400/50 flex items-center gap-3">
+                    <span class="text-2xl bg-cyan-500/20 p-2 rounded-xl">📐</span>
+                    <div>
+                        <div class="font-extrabold text-cyan-300 text-xs sm:text-sm">7. Lớp 12 Đang Học Toán (Đông Học Sinh)</div>
+                        <div class="text-[11px] text-slate-300">Tiết Toán Giải tích 12 sôi nổi với 20 học sinh & giải toán trên bảng</div>
+                    </div>
+                </button>
+
+                <button type="button" onclick="window.toggleFlagCeremony(); window.toggleFastTravelModal();" class="game-btn text-left p-3 rounded-2xl bg-red-600/25 hover:bg-red-600/40 border border-yellow-400/50 flex items-center gap-3">
+                    <span class="text-2xl bg-red-500/30 p-2 rounded-xl">🇻🇳</span>
+                    <div>
+                        <div class="font-extrabold text-yellow-300 text-xs sm:text-sm">8. Lễ Chào Cờ Toàn Trường THPT Ninh Giang</div>
+                        <div class="text-[11px] text-slate-200">Tập hợp toàn trường xếp hàng chào cờ & hát Quốc Ca</div>
+                    </div>
+                </button>
+
+                <button type="button" onclick="window.fastTravelTo('campus', 515, 1430, 'Sân Bóng Đá Cỏ Nhân Tạo THPT Ninh Giang')" class="game-btn text-left p-3 rounded-2xl bg-lime-500/20 hover:bg-lime-500/35 border border-lime-400/50 flex items-center gap-3">
+                    <span class="text-2xl bg-lime-500/20 p-2 rounded-xl">⚽</span>
+                    <div>
+                        <div class="font-extrabold text-lime-300 text-xs sm:text-sm">9. Sân Bóng Đá THPT Ninh Giang</div>
+                        <div class="text-[11px] text-slate-300">Sân cỏ nhân tạo phía Tây Nam, dẫn bóng & sút khung thành</div>
+                    </div>
+                </button>
+
+                <button type="button" onclick="window.fastTravelTo('campus', 430, 495, 'Khu Nhà Vệ Sinh Học Đường (WC Nam & Nữ)')" class="game-btn text-left p-3 rounded-2xl bg-teal-500/20 hover:bg-teal-500/35 border border-teal-400/50 flex items-center gap-3">
+                    <span class="text-2xl bg-teal-500/20 p-2 rounded-xl">🚻</span>
+                    <div>
+                        <div class="font-extrabold text-teal-300 text-xs sm:text-sm">10. Khu Nhà Vệ Sinh (WC Nam / Nữ)</div>
+                        <div class="text-[11px] text-slate-300">Rửa tay mát lạnh, soi gương chỉnh đầu tóc & giải lao giữa giờ</div>
+                    </div>
+                </button>
             </div>
 
             <!-- Beloved Teachers Quick Teleport Section -->
@@ -851,6 +899,133 @@
             ball: { x: 330, y: 420, z: 0, vx: 0, vy: 0, vz: 0, active: false },
             shuttlecock: { x: 840, y: 380, z: 35, vx: 0, vy: 130, vz: 60, rallyActive: true }
         };
+
+        // --- SÂN BÓNG ĐÁ THPT NINH GIANG STATE ---
+        const soccerState = {
+            homeScore: 0,
+            awayScore: 0,
+            ball: {
+                x: 515,
+                y: 1430,
+                vx: 0,
+                vy: 0,
+                radius: 11
+            },
+            goalCooldown: 0
+        };
+
+        // --- CHẾ ĐỘ LỄ CHÀO CỜ TOÀN TRƯỜNG STATE ---
+        const flagCeremonyState = {
+            active: false,
+            timer: 0,
+            flagHeightProgress: 1,
+            crowd: [],
+            anthemInterval: null
+        };
+
+        // --- DANH SÁCH ĐÔNG HỌC SINH TRONG LỚP 12 ĐANG HỌC TOÁN ---
+        const mathClassStudents = [];
+        function initMathClass12Students() {
+            mathClassStudents.length = 0;
+            const studentNames = [
+                'Minh Quân', 'Hải Yến', 'Tuấn Anh', 'Phương Linh',
+                'Hoàng Long', 'Ngọc Mai', 'Đức Duy', 'Thanh Trúc',
+                'Việt Hoàng', 'Thu Huyền', 'Quang Huy', 'Lan Hương',
+                'tiến Đạt', 'Bảo Trâm', 'Mạnh Hùng', 'Kim Ngân',
+                'Đình Phong', 'Khánh Huyền', 'Gia Khiêm', 'Tuyết Nhi'
+            ];
+            const mathThoughts = [
+                '📐 y\' = 3x² - 3 = 0 ⇔ x = ±1',
+                '∫₀¹ (2x + 1)dx = [x² + x]₀¹ = 2',
+                '✍️ Đạo hàm hàm hợp hay quá!',
+                '✋ Thưa thầy em xung phong lên bảng!',
+                '📊 Hàm số đồng biến trên (-∞; -1)',
+                '🧮 log₂(x - 1) = 3 ⇔ x = 9',
+                '📐 Thể tích khối chóp V = ⅓ B.h',
+                '💡 Số phức z = 3 + 4i ⇒ |z| = 5'
+            ];
+            const hairCols = ['#1c1917', '#5c341d', '#785233', '#691b26', '#172554'];
+            const stylesM = ['short_neat', 'korean_part', 'wavy_soft'];
+            const stylesF = ['ponytail', 'long_straight', 'bob_cut'];
+
+            let idx = 0;
+            // 4 hàng x 3 dãy bàn học = 12 bàn (mỗi bàn 1-2 học sinh ngồi chăm chú hướng lên bảng)
+            for (let row = 0; row < 4; row++) {
+                for (let col = 0; col < 3; col++) {
+                    const deskX = 115 + col * 155;
+                    const deskY = 235 + row * 72;
+                    const seatsInDesk = (row + col) % 2 === 0 ? 2 : 1;
+                    for (let s = 0; s < seatsInDesk; s++) {
+                        // Chừa 1 chỗ trống ở bàn giữa (row=1, col=1) để người chơi có thể ngồi học cùng!
+                        if (row === 1 && col === 1 && s === 0) continue;
+                        const isFemale = idx % 2 === 1;
+                        const hCol = hairCols[idx % hairCols.length];
+                        mathClassStudents.push({
+                            id: 'math12_stu_' + idx,
+                            name: studentNames[idx % studentNames.length],
+                            cohort: player.cohort || 'K60',
+                            className: activeClassroomName || '12A',
+                            gender: isFemale ? 'female' : 'male',
+                            outfit: idx % 5 === 0 ? 'ao_dai' : 'uniform_shirt',
+                            hairStyle: isFemale ? stylesF[idx % stylesF.length] : stylesM[idx % stylesM.length],
+                            hairColor: hCol,
+                            hairHighlight: '#44403c',
+                            accessories: { backpack: false, glasses: idx % 3 === 0, headphones: false },
+                            x: deskX + 26 + s * 46,
+                            y: deskY + 22,
+                            facing: 'up',
+                            sitting: true,
+                            isMoving: false,
+                            animTimer: idx * 0.8,
+                            waveTimer: idx % 6 === 0 ? 2.5 : 0,
+                            emoteBubble: idx % 4 === 0 ? mathThoughts[idx % mathThoughts.length] : null,
+                            emoteBubbleTimer: 4 + (idx % 5),
+                            thoughtPool: mathThoughts
+                        });
+                        idx++;
+                    }
+                }
+            }
+        }
+        initMathClass12Students();
+
+        // Khởi tạo đội hình Lễ Chào Cờ Toàn Trường (Đông đảo học sinh các khối 12, 11, 10 xếp hàng ngay ngắn)
+        function buildFlagCeremonyCrowd() {
+            flagCeremonyState.crowd.length = 0;
+            const blockLabels = ['12A', '12B', '12T', '12U', '11A', '11B', '11T', '10A', '10I', '10U'];
+            const hairCols = ['#1c1917', '#5c341d', '#785233'];
+            let idx = 0;
+            // 6 cột dọc x 5 hàng ngang hai bên sân Đài phun nước
+            const colXs = [980, 1065, 1150, 1650, 1735, 1820];
+            const rowYs = [1290, 1355, 1420, 1485, 1550];
+
+            colXs.forEach((cx, cIdx) => {
+                const clsLabel = blockLabels[cIdx % blockLabels.length];
+                rowYs.forEach((ry, rIdx) => {
+                    const isFemale = (cIdx + rIdx) % 2 === 1;
+                    flagCeremonyState.crowd.push({
+                        id: `ceremony_${cIdx}_${rIdx}`,
+                        name: rIdx === 0 ? `Lớp trưởng ${clsLabel}` : `HS Lớp ${clsLabel}`,
+                        cohort: cIdx < 2 ? 'K60' : (cIdx < 4 ? 'K61' : 'K59'),
+                        className: clsLabel,
+                        gender: isFemale ? 'female' : 'male',
+                        outfit: isFemale && rIdx % 2 === 0 ? 'ao_dai' : 'uniform_shirt',
+                        hairStyle: isFemale ? 'long_straight' : 'short_neat',
+                        hairColor: hairCols[idx % hairCols.length],
+                        hairHighlight: '#44403c',
+                        accessories: { backpack: false, glasses: rIdx === 1, headphones: false },
+                        x: cx,
+                        y: ry,
+                        facing: 'up',
+                        isMoving: false,
+                        isSaluting: true,
+                        animTimer: idx * 0.4,
+                        emoteBubble: rIdx === 0 && cIdx % 2 === 0 ? `🇻🇳 Lớp ${clsLabel} Nghiêm!` : null
+                    });
+                    idx++;
+                });
+            });
+        }
 
         const fountainParticles = [];
         for (let i = 0; i < 36; i++) {
@@ -1984,9 +2159,139 @@
                     gain.connect(audioCtx.destination);
                     osc.start(now);
                     osc.stop(now + 0.09);
+                } else if (type === 'whistle') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(2650, now);
+                    osc.frequency.setValueAtTime(2800, now + 0.08);
+                    osc.frequency.setValueAtTime(2600, now + 0.16);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } else if (type === 'water') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(620, now);
+                    osc.frequency.exponentialRampToValueAtTime(980, now + 0.18);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
                 }
             } catch (e) {}
         }
+
+        // Giai điệu Quốc Ca trang nghiêm khi bật Chế độ Chào Cờ Toàn Trường
+        function playAnthemMelody() {
+            if (!audioEnabled) return;
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                const notes = [
+                    { f: 392.00, d: 0.45 }, // Sol
+                    { f: 523.25, d: 0.45 }, // Do
+                    { f: 523.25, d: 0.65 }, // Do
+                    { f: 587.33, d: 0.35 }, // Re
+                    { f: 659.25, d: 0.55 }, // Mi
+                    { f: 587.33, d: 0.35 }, // Re
+                    { f: 523.25, d: 0.55 }, // Do
+                    { f: 659.25, d: 0.65 }, // Mi
+                    { f: 587.33, d: 0.35 }, // Re
+                    { f: 523.25, d: 0.45 }, // Do
+                    { f: 440.00, d: 0.45 }, // La
+                    { f: 392.00, d: 0.85 }  // Sol
+                ];
+                let t = audioCtx.currentTime + 0.05;
+                notes.forEach(n => {
+                    if (!flagCeremonyState.active) return;
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(n.f, t);
+                    gain.gain.setValueAtTime(0.14, t);
+                    gain.gain.exponentialRampToValueAtTime(0.008, t + n.d - 0.03);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(t);
+                    osc.stop(t + n.d);
+                    t += n.d;
+                });
+            } catch (e) {}
+        }
+
+        window.toggleFlagCeremony = function() {
+            flagCeremonyState.active = !flagCeremonyState.active;
+            const btn = document.getElementById('flagCeremonyBtn');
+            const lbl = document.getElementById('flagCeremonyLabel');
+
+            if (flagCeremonyState.active) {
+                if (currentScene !== 'campus') {
+                    currentScene = 'campus';
+                    document.getElementById('locationTitle').textContent = 'Lễ Chào Cờ Toàn Trường THPT Ninh Giang';
+                }
+                buildFlagCeremonyCrowd();
+                flagCeremonyState.timer = 0;
+                flagCeremonyState.flagHeightProgress = 0.15;
+
+                // Đưa người chơi và thầy cô về đúng đội hình chào cờ trước cột cờ Tổ quốc
+                player.sitting = false;
+                player.x = 1400;
+                player.y = 1495;
+                player.vx = 0;
+                player.vy = 0;
+                player.facing = 'up';
+                player.isSaluting = true;
+                player.emoteBubble = '🇻🇳 Nghiêm! Chào cờ - Chào!';
+                player.emoteBubbleTimer = 6.0;
+                camera.x = 1400;
+                camera.y = 1340;
+
+                if (btn) btn.className = 'game-btn rounded-xl px-2.5 py-1.5 text-[11px] font-black text-slate-950 bg-yellow-400 flex items-center gap-1 border-2 border-white shadow-lg';
+                if (lbl) lbl.textContent = 'Đang Chào Cờ';
+
+                playSound('drum');
+                setTimeout(() => {
+                    if (flagCeremonyState.active) playAnthemMelody();
+                }, 800);
+                showBanner('🇻🇳 LỄ CHÀO CỜ ĐẦU TUẦN TOÀN TRƯỜNG THPT NINH GIANG - NGHIÊM! CHÀO CỜ, CHÀO!', '🇻🇳');
+            } else {
+                player.isSaluting = false;
+                if (btn) btn.className = 'game-btn glass-panel rounded-xl px-2.5 py-1.5 text-[11px] font-extrabold text-yellow-200 bg-red-700/85 hover:bg-red-600 flex items-center gap-1 border-yellow-400/60 shadow';
+                if (lbl) lbl.textContent = 'Chào Cờ';
+                playSound('click');
+                showBanner('🏫 Đã kết thúc Lễ Chào Cờ, các lớp trở về khu vực học tập!', '🏫');
+            }
+            broadcastMyPlayerState(true);
+        };
+
+        window.enterMathClass12 = function() {
+            if (!activeClassroomName || !activeClassroomName.startsWith('12')) {
+                activeClassroomName = '12' + (player.classLetter || 'A');
+            }
+            initMathClass12Students();
+            playSound('door');
+            const m = document.getElementById('fastTravelModal');
+            if (m) {
+                m.classList.add('hidden');
+                m.classList.remove('flex');
+            }
+            doorCooldown = 0.8;
+            pendingSceneTarget = {
+                scene: 'main_building',
+                x: 270,
+                y: 310,
+                label: `Tiết Học Toán Lớp ${activeClassroomName} (Đông Học Sinh)`,
+                icon: '📐'
+            };
+            transitionPhase = 'fade_out';
+        };
 
         window.toggleAudio = function() {
             audioEnabled = !audioEnabled;
@@ -2003,6 +2308,7 @@
 
         window.enterSpecificClassroom = function(classCode) {
             activeClassroomName = classCode || player.className;
+            initMathClass12Students();
             playSound('door');
             const m = document.getElementById('fastTravelModal');
             m.classList.add('hidden');
@@ -2010,10 +2316,10 @@
             doorCooldown = 0.8;
             pendingSceneTarget = {
                 scene: 'main_building',
-                x: 340,
-                y: 660,
-                label: `Phòng Học Lớp ${activeClassroomName} - THPT Ninh Giang`,
-                icon: '📚'
+                x: 270,
+                y: 480,
+                label: `Tiết Học Toán Lớp ${activeClassroomName} - THPT Ninh Giang`,
+                icon: '📐'
             };
             transitionPhase = 'fade_out';
         };
@@ -2160,8 +2466,9 @@
                 c.fillRect(6, -30 + bobY, 2.5, 14);
             }
 
-            // 6. Arms (with Wave Animation)
-            const isWaving = (charObj.waveTimer && charObj.waveTimer > 0) || (isPreview && previewPose === 'wave');
+            // 6. Arms (with Wave & Salute Animation)
+            const isSaluting = Boolean(charObj.isSaluting);
+            const isWaving = !isSaluting && ((charObj.waveTimer && charObj.waveTimer > 0) || (isPreview && previewPose === 'wave'));
             c.fillStyle = torsoColor;
             c.strokeStyle = '#475569';
             c.lineWidth = 1.1;
@@ -2169,7 +2476,7 @@
             // Left Arm
             c.save();
             c.translate(-11, -28 + bobY);
-            c.rotate(walkSwing * 0.45);
+            c.rotate(isSaluting ? 0 : walkSwing * 0.45);
             fillAndStrokeRoundRect(c, -2.5, 0, 5, 12, 2.5);
             c.fillStyle = '#fde68a';
             c.beginPath();
@@ -2180,7 +2487,10 @@
             // Right Arm
             c.save();
             c.translate(11, -28 + bobY);
-            if (isWaving) {
+            if (isSaluting) {
+                // Động tác giơ tay chào cờ trang nghiêm lên thái dương
+                c.rotate(-2.35);
+            } else if (isWaving) {
                 c.rotate(-2.4 + Math.sin((charObj.animTimer || previewTimer) * 16) * 0.35);
             } else {
                 c.rotate(-walkSwing * 0.45);
@@ -2416,7 +2726,16 @@
                     { x: 1855, y: 465, w: 185, h: 440 },
 
                     // FRONT 3-TIERED WHITE FOUNTAIN & FLAGPOLE BASIN
-                    { x: 1320, y: 1325, w: 160, h: 95 }
+                    { x: 1320, y: 1325, w: 160, h: 95 },
+
+                    // KHU NHÀ VỆ SINH HỌC ĐƯỜNG (WC NAM & NỮ - Phía Bắc Nhà Đa Năng: X=200..650, Y=220..500)
+                    // Chừa cửa đi vào rộng rãi ở chính giữa (X=385..465, Y=480)
+                    { x: 200, y: 220, w: 450, h: 24 },
+                    { x: 200, y: 220, w: 24, h: 280 },
+                    { x: 626, y: 220, w: 24, h: 280 },
+                    { x: 200, y: 476, w: 185, h: 24 },
+                    { x: 465, y: 476, w: 185, h: 24 },
+                    { x: 418, y: 244, w: 14, h: 165 }
                 ],
                 portals: [
                     // LEFT WING: NHÀ ĐA NĂNG Entrance
@@ -2530,6 +2849,51 @@
                         label: 'Ngồi Ghế Đá Khuôn Viên Giữa Trường',
                         icon: '🪑',
                         action: () => toggleSitOnBench(1620, 735)
+                    },
+                    // TƯƠNG TÁC LỄ CHÀO CỜ TẠI CỘT CỜ ĐÀI PHUN NƯỚC
+                    {
+                        x: 1400, y: 1295, radius: 75,
+                        type: 'flag_ceremony',
+                        label: '🇻🇳 Tổ Chức Lễ Chào Cờ Toàn Trường THPT Ninh Giang',
+                        icon: '🇻🇳',
+                        action: () => window.toggleFlagCeremony()
+                    },
+                    // TƯƠNG TÁC SÂN BÓNG ĐÁ THPT NINH GIANG
+                    {
+                        x: 515, y: 1430, radius: 175,
+                        type: 'soccer_pitch',
+                        label: '⚽ Sút Bóng Vào Khung Thành!',
+                        icon: '⚽',
+                        action: () => kickSoccerBall()
+                    },
+                    // TƯƠNG TÁC NHÀ VỆ SINH (WC NAM / NỮ, BỒN RỬA TAY & GƯƠNG SOI)
+                    {
+                        x: 345, y: 425, radius: 68,
+                        type: 'wc_sink',
+                        label: '🚰 Rửa Tay Mát Lạnh & Soi Gương Chỉnh Đầu Tóc',
+                        icon: '🚰',
+                        action: () => useRestroomSinkAndMirror()
+                    },
+                    {
+                        x: 505, y: 425, radius: 68,
+                        type: 'wc_sink_female',
+                        label: '🪞 Soi Gương Chỉnh Trang Phục & Rửa Tay',
+                        icon: '🪞',
+                        action: () => useRestroomSinkAndMirror()
+                    },
+                    {
+                        x: 295, y: 295, radius: 65,
+                        type: 'wc_male',
+                        label: '🚹 Vào Khu Vệ Sinh Nam (WC Nam)',
+                        icon: '🚹',
+                        action: () => useRestroomCubicle('male')
+                    },
+                    {
+                        x: 545, y: 295, radius: 65,
+                        type: 'wc_female',
+                        label: '🚺 Vào Khu Vệ Sinh Nữ (WC Nữ)',
+                        icon: '🚺',
+                        action: () => useRestroomCubicle('female')
                     }
                 ],
                 npcs: [
@@ -2638,14 +3002,44 @@
                         hairColor: '#1c1917',
                         accessories: { glasses: true },
                         facing: 'right',
-                        chat: `Thầy Toàn chào em! Bên trái sân trường mình là Nhà Đa Năng (nơi Thầy Phúc đang dạy thể chất), còn bên trong tòa học đường cũng có phòng truyền thống K52 - K61. Chúc em có những phút giây thật vui bên bạn bè!`
+                        chat: `Thầy Toàn chào em! Bên trái sân trường mình là Nhà Đa Năng, phía dưới là Sân Bóng Đá cỏ nhân tạo và phía trên là khu Nhà Vệ Sinh học đường. Chúc em có những phút giây thật vui bên bạn bè!`
+                    },
+                    {
+                        id: 'soccer_striker_huy',
+                        name: 'Gia Huy (K60 - 12T)',
+                        role: 'Đội bóng Lớp 12T',
+                        avatar: '⚽',
+                        x: 360, y: 1425,
+                        homeX: 360, homeY: 1425,
+                        patrolRange: 85,
+                        gender: 'male',
+                        outfit: 'pe_uniform',
+                        hairStyle: 'korean_part',
+                        hairColor: '#1c1917',
+                        facing: 'right',
+                        chat: `Chuyền bóng đây bạn ơi! Sân bóng đá THPT Ninh Giang rộng cực kỳ, bạn cứ chạy chạm vào quả bóng để dẫn bóng rồi bấm phím E để sút tung lưới nhé!`
+                    },
+                    {
+                        id: 'soccer_keeper_dat',
+                        name: 'Thành Đạt (K61 - 11U)',
+                        role: 'Thủ môn Lớp 11U',
+                        avatar: '🧤',
+                        x: 810, y: 1430,
+                        homeX: 810, homeY: 1430,
+                        patrolRange: 25,
+                        gender: 'male',
+                        outfit: 'class_shirt',
+                        hairStyle: 'short_neat',
+                        hairColor: '#5c341d',
+                        facing: 'left',
+                        chat: `Đố cậu sút thắng được mình đấy! Bấm phím E khi ở gần bóng để sút xa vào khung thành nhé!`
                     }
                 ]
             },
 
-            // --- INTERIOR 1: PHÒNG HỌC CÁC LỚP (12A..12U, 11A..11U, 10A..10U) ---
+            // --- INTERIOR 1: PHÒNG HỌC CÁC LỚP (TIẾT HỌC TOÁN LỚP 12 ĐÔNG HỌC SINH) ---
             main_building: {
-                name: 'Bên Trong Khu Nhà Học Chính',
+                name: 'Lớp 12 Đang Học Toán - Khu Nhà Học Chính',
                 width: 1200,
                 height: 820,
                 walls: [
@@ -2658,7 +3052,7 @@
                     { x: 50, y: 520, w: 160, h: 24 },
                     { x: 360, y: 520, w: 460, h: 24 },
                     { x: 960, y: 520, w: 190, h: 24 },
-                    { x: 100, y: 150, w: 115, h: 50 },
+                    { x: 78, y: 138, w: 105, h: 46 },
                     { x: 670, y: 110, w: 420, h: 55 }
                 ],
                 portals: [
@@ -2670,48 +3064,65 @@
                 ],
                 interactables: [
                     {
-                        x: 310, y: 135, radius: 75,
+                        x: 345, y: 130, radius: 95,
                         type: 'blackboard',
-                        label: 'Lên Bảng Giải Đố Kiến Thức THPT Ninh Giang',
-                        icon: '📝',
+                        label: '📐 Lên Bảng Giải Bài Toán Lớp 12 (Khảo Sát Hàm Số & Tích Phân)',
+                        icon: '📐',
                         action: () => openClassroomQuiz()
                     },
                     {
-                        x: 320, y: 310, radius: 60,
+                        x: 295, y: 325, radius: 75,
                         type: 'desk',
-                        label: 'Ngồi Vào Bàn Học Của Lớp',
+                        label: '📖 Ngồi Vào Bàn Học Tiết Toán 12 Cùng Cả Lớp',
                         icon: '📖',
                         action: () => {
                             questState.visitedMainBuilding = true;
                             updateQuestHUD();
-                            toggleSitOnBench(320, 305);
-                            player.emoteBubble = `📚 Tự hào Lớp ${activeClassroomName}!`;
-                            player.emoteBubbleTimer = 2.8;
+                            toggleSitOnBench(296, 329);
+                            player.facing = 'up';
+                            player.emoteBubble = `📐 Chăm chú học Toán Lớp ${activeClassroomName}!`;
+                            player.emoteBubbleTimer = 3.5;
                         }
                     },
                     {
                         x: 880, y: 215, radius: 85,
                         type: 'tradition',
-                        label: 'Đổi Sang Phòng Học Lớp Khác (A, B, C, D, E, G, H, I, K)',
+                        label: 'Đổi Sang Phòng Học Lớp Khác (A, B, C, D, E, G, H, I, K, T, U)',
                         icon: '🏫',
                         action: () => window.toggleFastTravelModal()
                     }
                 ],
                 npcs: [
                     {
+                        id: 'teacher_math_12',
+                        name: 'Thầy Nam (Dạy Toán 12)',
+                        role: 'Tổ Toán - THPT Ninh Giang',
+                        avatar: '👨‍🏫',
+                        x: 145, y: 168,
+                        homeX: 145, homeY: 168,
+                        patrolRange: 25,
+                        gender: 'male',
+                        outfit: 'uniform_shirt',
+                        hairStyle: 'short_neat',
+                        hairColor: '#1c1917',
+                        accessories: { glasses: true },
+                        facing: 'down',
+                        chat: `Thầy Nam chào em! Hôm nay Lớp ${activeClassroomName} học chuyên đề Toán 12: Khảo sát hàm số bậc ba y = x³ - 3x + 2 và Tính tích phân. Cả lớp đang ngồi học rất đông đủ, em hãy vào chỗ ngồi hoặc xung phong lên bảng giải toán nhé!`
+                    },
+                    {
                         id: 'teacher_diep',
                         name: 'Cô Diệp',
-                        role: 'Giáo viên THPT Ninh Giang',
+                        role: 'Giáo viên Chủ nhiệm Khối 12',
                         avatar: '👩‍🏫',
-                        x: 215, y: 195,
-                        homeX: 215, homeY: 195,
-                        patrolRange: 30,
+                        x: 525, y: 175,
+                        homeX: 525, homeY: 175,
+                        patrolRange: 20,
                         gender: 'female',
                         outfit: 'ao_dai',
                         hairStyle: 'long_straight',
                         hairColor: '#1c1917',
                         facing: 'down',
-                        chat: `Cô Diệp chào mừng em đến với phòng học Lớp ${activeClassroomName}! Trường THPT Ninh Giang tự hào với các thế hệ học sinh từ K52 đến K61 và các lớp A, B, C, D, E, G, H, I, K, T, U. Em hãy tiến lên bảng xanh bấm phím E để giải đố cùng cô nhé!`
+                        chat: `Cô Diệp rất vui khi thấy tập thể Lớp ${activeClassroomName} ngồi kín cả 12 bàn học, hăng hái giơ tay phát biểu trong giờ Toán 12!`
                     },
                     {
                         id: 'teacher_toan',
@@ -2727,7 +3138,7 @@
                         hairColor: '#1c1917',
                         accessories: { glasses: true },
                         facing: 'down',
-                        chat: `Thầy Toàn chào em! Tại Sảnh Truyền Thống này lưu giữ biết bao kỷ niệm của các khóa K52, K53, K54, K55, K56, K57, K58, K59, K60, K61. Em có thể bấm vào bảng chọn lớp phía sau thầy để chuyển sang bất kỳ lớp nào từ A..K cho tới T, U nhé!`
+                        chat: `Thầy Toàn chào em! Tại Sảnh Truyền Thống này lưu giữ biết bao kỷ niệm của các khóa K52 đến K61. Em có thể bấm vào bảng chọn lớp phía sau thầy để chuyển sang bất kỳ lớp nào từ A..K cho tới T, U nhé!`
                     }
                 ]
             },
@@ -3447,6 +3858,12 @@
             // 8. RIGHT WING: NHÀ HIỆU BỘ
             drawAdminRightWing(c, 2220, 620, 430, 620);
 
+            // 8.5. SÂN BÓNG ĐÁ CỎ NHÂN TẠO THPT NINH GIANG (Tây Nam: X=165..865, Y=1265..1600)
+            drawCampusSoccerPitchStatic(c, 165, 1265, 700, 335);
+
+            // 8.6. KHU NHÀ VỆ SINH HỌC ĐƯỜNG (WC NAM & NỮ - Tây Bắc: X=200..650, Y=220..500)
+            drawCampusRestroomBuildingStatic(c, 200, 220, 450, 280);
+
             // 9. GUARDHOUSE & PERIMETER FENCE
             drawGuardhouseAndFence(c);
 
@@ -3460,8 +3877,263 @@
             // Vẽ toàn bộ mặt bằng tĩnh chỉ bằng 1 lệnh drawImage cực nhẹ
             c.drawImage(campusStaticCacheCanvas, 0, 0);
 
-            // Chỉ vẽ phần động: Đài phun nước 3 tầng & Cờ Tổ quốc tung bay trước sảnh
+            // Vẽ bảng tỷ số động & quả bóng đá trên Sân Bóng THPT Ninh Giang
+            drawCampusSoccerDynamic(c, timeSec);
+
+            // Vẽ phần động: Đài phun nước 3 tầng & Cờ Tổ quốc tung bay trước sảnh
             drawFrontFountainAndFlagpolePlaza(c, 1400, 1370, timeSec);
+
+            // Nếu đang bật Chế độ Lễ Chào Cờ Toàn Trường, vẽ thảm đỏ & băng rôn Lễ Chào Cờ
+            if (flagCeremonyState.active) {
+                drawFlagCeremonyDecorations(c, timeSec);
+            }
+        }
+
+        function drawCampusSoccerPitchStatic(c, x, y, w, h) {
+            c.save();
+            // Đổ bóng sân bóng
+            c.fillStyle = 'rgba(15, 23, 42, 0.25)';
+            fillRoundRect(c, x + 8, y + 8, w, h, 16);
+
+            // Đường biên ngoài cỏ nhân tạo
+            c.fillStyle = '#14532d';
+            c.strokeStyle = '#fbbf24';
+            c.lineWidth = 3;
+            fillAndStrokeRoundRect(c, x, y, w, h, 14);
+
+            // Các sọc cỏ xanh non - xanh đậm đan xen
+            const pitchX = x + 24;
+            const pitchY = y + 28;
+            const pitchW = w - 48;
+            const pitchH = h - 48;
+            const stripeCount = 10;
+            const stripeW = pitchW / stripeCount;
+
+            for (let i = 0; i < stripeCount; i++) {
+                c.fillStyle = i % 2 === 0 ? '#15803d' : '#16a34a';
+                c.fillRect(pitchX + i * stripeW, pitchY, stripeW, pitchH);
+            }
+
+            // Đường vôi trắng sân bóng
+            c.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+            c.lineWidth = 2.5;
+            c.strokeRect(pitchX, pitchY, pitchW, pitchH);
+
+            // Vạch giữa sân & Vòng tròn giao bóng
+            const midX = pitchX + pitchW / 2;
+            const midY = pitchY + pitchH / 2;
+            c.beginPath();
+            c.moveTo(midX, pitchY);
+            c.lineTo(midX, pitchY + pitchH);
+            c.stroke();
+
+            c.beginPath();
+            c.arc(midX, midY, 44, 0, Math.PI * 2);
+            c.stroke();
+            c.fillStyle = '#ffffff';
+            c.beginPath();
+            c.arc(midX, midY, 4, 0, Math.PI * 2);
+            c.fill();
+
+            // Vòng cấm địa 2 bên
+            c.strokeRect(pitchX, midY - 72, 85, 144);
+            c.strokeRect(pitchX + pitchW - 85, midY - 72, 85, 144);
+
+            // Khung thành bên Trái & bên Phải
+            c.fillStyle = 'rgba(255, 255, 255, 0.28)';
+            c.strokeStyle = '#ffffff';
+            c.lineWidth = 3;
+            c.fillRect(pitchX - 18, midY - 38, 18, 76);
+            c.strokeRect(pitchX - 18, midY - 38, 18, 76);
+
+            c.fillRect(pitchX + pitchW, midY - 38, 18, 76);
+            c.strokeRect(pitchX + pitchW, midY - 38, 18, 76);
+
+            c.restore();
+        }
+
+        function drawCampusSoccerDynamic(c, timeSec) {
+            c.save();
+            // Bảng tỷ số điện tử trên Sân Bóng
+            c.fillStyle = '#0f172a';
+            c.strokeStyle = '#fbbf24';
+            c.lineWidth = 2.5;
+            fillAndStrokeRoundRect(c, 335, 1252, 360, 28, 8);
+            c.fillStyle = '#fde047';
+            c.font = '900 12px "Be Vietnam Pro", sans-serif';
+            c.textAlign = 'center';
+            c.fillText(`⚽ SÂN BÓNG THPT NINH GIANG  •  TỶ SỐ: ${soccerState.homeScore} - ${soccerState.awayScore} ⚽`, 515, 1270);
+
+            // Quả bóng đá
+            const b = soccerState.ball;
+            c.fillStyle = 'rgba(0, 0, 0, 0.32)';
+            c.beginPath();
+            c.ellipse(b.x, b.y + 4, 10, 5, 0, 0, Math.PI * 2);
+            c.fill();
+
+            c.fillStyle = '#ffffff';
+            c.strokeStyle = '#0f172a';
+            c.lineWidth = 2;
+            c.beginPath();
+            c.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+            c.fill();
+            c.stroke();
+
+            // Họa tiết ngũ giác đen trên quả bóng
+            c.fillStyle = '#0f172a';
+            c.beginPath();
+            c.arc(b.x, b.y, 4, 0, Math.PI * 2);
+            c.fill();
+            for (let a = 0; a < 5; a++) {
+                const ang = a * ((Math.PI * 2) / 5) + (b.x + b.y) * 0.04;
+                c.beginPath();
+                c.arc(b.x + Math.cos(ang) * 7.5, b.y + Math.sin(ang) * 7.5, 2.2, 0, Math.PI * 2);
+                c.fill();
+            }
+            c.restore();
+        }
+
+        function drawCampusRestroomBuildingStatic(c, x, y, w, h) {
+            c.save();
+            // Đổ bóng nhà vệ sinh
+            c.fillStyle = 'rgba(15, 23, 42, 0.22)';
+            fillRoundRect(c, x + 10, y + 12, w, h, 12);
+
+            // Nền gạch men sạch sẽ: Trái là WC Nam (Xanh dương nhạt), Phải là WC Nữ (Hồng nhạt)
+            c.fillStyle = '#e0f2fe';
+            c.fillRect(x + 12, y + 12, w / 2 - 12, h - 24);
+            c.fillStyle = '#fce7f3';
+            c.fillRect(x + w / 2, y + 12, w / 2 - 12, h - 24);
+
+            // Kẻ ô gạch men
+            c.strokeStyle = 'rgba(148, 163, 184, 0.35)';
+            c.lineWidth = 1;
+            for (let gx = x + 20; gx < x + w - 15; gx += 28) {
+                c.beginPath();
+                c.moveTo(gx, y + 20);
+                c.lineTo(gx, y + h - 20);
+                c.stroke();
+            }
+            for (let gy = y + 24; gy < y + h - 15; gy += 28) {
+                c.beginPath();
+                c.moveTo(x + 20, gy);
+                c.lineTo(x + w - 20, gy);
+                c.stroke();
+            }
+
+            // Các buồng vệ sinh Nam (Trái) & Nữ (Phải)
+            for (let i = 0; i < 3; i++) {
+                const sxMale = x + 32 + i * 60;
+                c.fillStyle = '#bae6fd';
+                c.strokeStyle = '#0284c7';
+                c.lineWidth = 2;
+                c.fillRect(sxMale, y + 32, 52, 72);
+                c.strokeRect(sxMale, y + 32, 52, 72);
+                // Bồn cầu trắng
+                c.fillStyle = '#ffffff';
+                c.beginPath();
+                c.ellipse(sxMale + 26, y + 58, 10, 14, 0, 0, Math.PI * 2);
+                c.fill();
+                c.stroke();
+
+                const sxFemale = x + w / 2 + 22 + i * 60;
+                c.fillStyle = '#fbcfe8';
+                c.strokeStyle = '#db2777';
+                c.fillRect(sxFemale, y + 32, 52, 72);
+                c.strokeRect(sxFemale, y + 32, 52, 72);
+                c.fillStyle = '#ffffff';
+                c.beginPath();
+                c.ellipse(sxFemale + 26, y + 58, 10, 14, 0, 0, Math.PI * 2);
+                c.fill();
+                c.stroke();
+            }
+
+            // Bàn đá Lavabo rửa tay & Gương soi ở cả 2 bên
+            // Bên Nam
+            c.fillStyle = '#38bdf8';
+            fillRoundRect(c, x + 28, y + 185, 130, 32, 6);
+            [x + 60, x + 120].forEach(sinkX => {
+                c.fillStyle = '#ffffff';
+                c.beginPath();
+                c.arc(sinkX, y + 201, 11, 0, Math.PI * 2);
+                c.fill();
+                c.fillStyle = '#0ea5e9';
+                c.beginPath();
+                c.arc(sinkX, y + 201, 6, 0, Math.PI * 2);
+                c.fill();
+            });
+
+            // Bên Nữ
+            c.fillStyle = '#f472b6';
+            fillRoundRect(c, x + w - 158, y + 185, 130, 32, 6);
+            [x + w - 125, x + w - 65].forEach(sinkX => {
+                c.fillStyle = '#ffffff';
+                c.beginPath();
+                c.arc(sinkX, y + 201, 11, 0, Math.PI * 2);
+                c.fill();
+                c.fillStyle = '#0ea5e9';
+                c.beginPath();
+                c.arc(sinkX, y + 201, 6, 0, Math.PI * 2);
+                c.fill();
+            });
+
+            // Tường bao quanh & Vách ngăn giữa Nam/Nữ
+            c.fillStyle = '#0f172a';
+            c.fillRect(x, y, w, 24);
+            c.fillRect(x, y, 22, h);
+            c.fillRect(x + w - 22, y, 22, h);
+            c.fillRect(x, y + h - 24, 185, 24);
+            c.fillRect(x + 265, y + h - 24, 185, 24);
+            c.fillRect(x + w / 2 - 7, y + 24, 14, 165);
+
+            // Biển hiệu NHÀ VỆ SINH HỌC SINH
+            c.fillStyle = '#0284c7';
+            fillRoundRect(c, x + 36, y + 2, 165, 22, 5);
+            c.fillStyle = '#ffffff';
+            c.font = '900 11px "Be Vietnam Pro", sans-serif';
+            c.textAlign = 'center';
+            c.fillText('🚹 WC NAM • RỬA TAY', x + 118, y + 17);
+
+            c.fillStyle = '#db2777';
+            fillRoundRect(c, x + w - 201, y + 2, 165, 22, 5);
+            c.fillStyle = '#ffffff';
+            c.fillText('🚺 WC NỮ • GƯƠNG SOI', x + w - 118, y + 17);
+
+            // Thảm chào cửa ra vào Nhà Vệ Sinh
+            c.fillStyle = '#0d9488';
+            fillRoundRect(c, x + 188, y + h - 22, 74, 22, 4);
+            c.fillStyle = '#ffffff';
+            c.font = 'bold 9.5px "Be Vietnam Pro", sans-serif';
+            c.fillText('🚻 LỐI VÀO WC', x + 225, y + h - 8);
+
+            c.restore();
+        }
+
+        function drawFlagCeremonyDecorations(c, timeSec) {
+            c.save();
+            // Thảm đỏ trang trọng dọc theo sân chào cờ
+            c.fillStyle = 'rgba(185, 28, 28, 0.78)';
+            c.strokeStyle = '#facc15';
+            c.lineWidth = 3;
+            fillAndStrokeRoundRect(c, 1210, 1235, 380, 48, 8);
+            c.fillStyle = '#fef08a';
+            c.font = '900 13.5px "Be Vietnam Pro", sans-serif';
+            c.textAlign = 'center';
+            c.fillText('🇻🇳 LỄ CHÀO CỜ TOÀN TRƯỜNG THPT NINH GIANG 🇻🇳', 1400, 1264);
+
+            // Biển tên các khối lớp xếp hàng chào cờ
+            const colXs = [980, 1065, 1150, 1650, 1735, 1820];
+            const blockLabels = ['KHỐI 12A-E', 'KHỐI 12G-U', 'KHỐI 11A-E', 'KHỐI 11G-U', 'KHỐI 10A-E', 'KHỐI 10G-U'];
+            colXs.forEach((cx, i) => {
+                c.fillStyle = '#1e3a8a';
+                c.strokeStyle = '#fde047';
+                c.lineWidth = 1.5;
+                fillAndStrokeRoundRect(c, cx - 36, 1245, 72, 20, 5);
+                c.fillStyle = '#ffffff';
+                c.font = 'bold 9px "Be Vietnam Pro", sans-serif';
+                c.fillText(blockLabels[i], cx, 1258);
+            });
+            c.restore();
         }
 
         function drawNorthAcademicBuilding(c, x, y, w, h) {
@@ -3767,23 +4439,27 @@
             c.lineTo(0, -230);
             c.stroke();
 
+            const flagLiftOffset = flagCeremonyState.active ? (1 - flagCeremonyState.flagHeightProgress) * 95 : 0;
+            const flagTopY = -225 + flagLiftOffset;
+            const flagBottomY = -186 + flagLiftOffset;
+
             c.fillStyle = '#dc2626';
             c.beginPath();
-            c.moveTo(2, -225);
+            c.moveTo(2, flagTopY);
             for (let fx = 0; fx <= 54; fx += 9) {
                 const wy = Math.sin(timeSec * 5 + fx * 0.1) * 4;
-                c.lineTo(2 + fx, -225 + wy);
+                c.lineTo(2 + fx, flagTopY + wy);
             }
             for (let fx = 54; fx >= 0; fx -= 9) {
                 const wy = Math.sin(timeSec * 5 + fx * 0.1) * 4;
-                c.lineTo(2 + fx, -186 + wy);
+                c.lineTo(2 + fx, flagBottomY + wy);
             }
             c.closePath();
             c.fill();
             c.fillStyle = '#facc15';
             c.font = '15px sans-serif';
             c.textAlign = 'center';
-            c.fillText('★', 28, -200);
+            c.fillText('★', 28, flagTopY + 25);
 
             // 3-Tiered White Stone Fountain
             c.fillStyle = '#e2e8f0';
@@ -4209,38 +4885,54 @@
             c.fillStyle = '#b45309';
             c.fillRect(585, 70, 30, 380);
 
-            // LEFT ROOM: PHÒNG HỌC CỦA LỚP ĐANG CHỌN (12A..12U, 11A..11U, 10A..10U)
+            // LEFT ROOM: PHÒNG HỌC LỚP 12 ĐANG HỌC TOÁN VỚI ĐÔNG HỌC SINH (12A..12U)
             c.fillStyle = '#064e3b';
             c.strokeStyle = '#92400e';
             c.lineWidth = 5;
-            c.fillRect(175, 20, 340, 50);
-            c.strokeRect(175, 20, 340, 50);
+            c.fillRect(145, 14, 415, 58);
+            c.strokeRect(145, 14, 415, 58);
 
-            c.fillStyle = '#ffffff';
-            c.font = 'bold 13px "Be Vietnam Pro", sans-serif';
+            c.fillStyle = '#fde047';
+            c.font = '900 12px "Be Vietnam Pro", sans-serif';
             c.textAlign = 'center';
-            c.fillText(`PHÒNG HỌC LỚP ${activeClassroomName} (${player.cohort}) - THPT NINH GIANG`, 345, 41);
-            c.font = '10px "Be Vietnam Pro", sans-serif';
+            c.fillText(`📐 TIẾT TOÁN LỚP ${activeClassroomName} (${player.cohort}) - GIẢI TÍCH & HÀM SỐ`, 352, 31);
+            c.font = 'bold 10.5px monospace';
+            c.fillStyle = '#ffffff';
+            c.fillText('1) Khảo sát: y = x³ - 3x + 2  ⇒  y\' = 3x² - 3 = 0 ⇔ x = ±1', 352, 47);
             c.fillStyle = '#a7f3d0';
-            c.fillText('Tiên Học Lễ - Hậu Học Văn • Hệ Lớp A, B, C, D, E, G, H, I, K, T, U', 345, 58);
+            c.fillText('2) Tích phân: I = ∫₀¹ (2x + 1)dx = [x² + x]₀¹ = 2   |   z = a + bi', 352, 63);
 
-            // Teacher Desk
+            // Đồ thị hàm số bậc 3 vẽ phấn vàng bên góc phải bảng xanh
+            c.strokeStyle = '#facc15';
+            c.lineWidth = 1.8;
+            c.beginPath();
+            c.moveTo(505, 62);
+            c.bezierCurveTo(518, 20, 532, 66, 548, 22);
+            c.stroke();
+
+            // Bàn giáo viên trên bục giảng
             c.fillStyle = '#92400e';
-            fillRoundRect(c, 100, 150, 115, 52, 6);
+            fillRoundRect(c, 78, 138, 105, 46, 6);
+            c.fillStyle = '#fef08a';
+            c.font = 'bold 9px "Be Vietnam Pro", sans-serif';
+            c.fillText('BÀN GIÁO VIÊN', 130, 165);
 
-            // Student Wooden Desks
-            for (let r = 0; r < 3; r++) {
+            // 12 Bàn học sinh (4 dãy x 3 cột) đầy ắp sách vở Toán 12 & nháp
+            for (let r = 0; r < 4; r++) {
                 for (let col = 0; col < 3; col++) {
-                    const dx = 130 + col * 140;
-                    const dy = 250 + r * 82;
+                    const dx = 115 + col * 155;
+                    const dy = 220 + r * 72;
                     c.fillStyle = '#78350f';
-                    c.fillRect(dx + 6, dy + 28, 88, 14);
+                    c.fillRect(dx + 6, dy + 26, 92, 13);
                     c.fillStyle = '#b45309';
                     c.strokeStyle = '#78350f';
                     c.lineWidth = 1.5;
-                    fillAndStrokeRoundRect(c, dx, dy, 100, 28, 4);
+                    fillAndStrokeRoundRect(c, dx, dy, 104, 26, 4);
+                    // Sách giáo khoa Toán 12 & vở ghi bài trên mỗi bàn
                     c.fillStyle = '#ffffff';
-                    c.fillRect(dx + 18, dy + 5, 20, 16);
+                    c.fillRect(dx + 14, dy + 4, 22, 15);
+                    c.fillStyle = '#38bdf8';
+                    c.fillRect(dx + 64, dy + 4, 22, 15);
                 }
             }
 
@@ -4504,6 +5196,9 @@
             if (mag > 0.12 && player.sitting) {
                 player.sitting = false;
             }
+            if (mag > 0.12 && player.isSaluting && !flagCeremonyState.active) {
+                player.isSaluting = false;
+            }
 
             const speed = player.baseSpeed * (player.isSprinting ? player.sprintMultiplier : 1);
             const targetVx = inputX * speed;
@@ -4571,6 +5266,15 @@
                     if (npc.emoteBubbleTimer <= 0) npc.emoteBubble = null;
                 }
 
+                if (flagCeremonyState.active && currentScene === 'campus') {
+                    npc.isMoving = false;
+                    npc.facing = 'up';
+                    npc.isSaluting = true;
+                    return;
+                } else {
+                    npc.isSaluting = false;
+                }
+
                 const distToPlayer = Math.hypot(player.x - npc.x, player.y - npc.y);
                 if (distToPlayer < 95) {
                     npc.isMoving = false;
@@ -4590,9 +5294,35 @@
                 }
             });
 
-            // 4. Update Mini-Games inside Nhà Đa Năng
+            // 4. Update Mini-Games inside Nhà Đa Năng & Sân Bóng Đá ngoài Sân Trường
             if (currentScene === 'gym') {
                 updateGymSports(dt);
+            } else if (currentScene === 'campus') {
+                updateCampusSoccer(dt);
+                if (flagCeremonyState.active) {
+                    flagCeremonyState.timer += dt;
+                    flagCeremonyState.flagHeightProgress = Math.min(1, flagCeremonyState.flagHeightProgress + dt * 0.14);
+                    flagCeremonyState.crowd.forEach(stu => {
+                        stu.animTimer = (stu.animTimer || 0) + dt;
+                    });
+                }
+            } else if (currentScene === 'main_building') {
+                // Cập nhật học sinh trong tiết học Toán Lớp 12 (giơ tay phát biểu, ghi chép)
+                mathClassStudents.forEach((stu, idx) => {
+                    stu.animTimer = (stu.animTimer || 0) + dt;
+                    if (stu.waveTimer > 0) {
+                        stu.waveTimer -= dt;
+                    } else if (Math.random() < 0.002) {
+                        stu.waveTimer = 2.4;
+                    }
+                    if (stu.emoteBubbleTimer > 0) {
+                        stu.emoteBubbleTimer -= dt;
+                        if (stu.emoteBubbleTimer <= 0) stu.emoteBubble = null;
+                    } else if (Math.random() < 0.0018) {
+                        stu.emoteBubble = stu.thoughtPool[(idx + Math.floor(timeSec)) % stu.thoughtPool.length];
+                        stu.emoteBubbleTimer = 4.0;
+                    }
+                });
             }
 
             // 5. Check Nearest Portal, Interactable, or NPC
@@ -4801,6 +5531,126 @@
             player.emoteBubbleTimer = 1.8;
         }
 
+        // --- VẬT LÝ SÂN BÓNG ĐÁ THPT NINH GIANG & TƯƠNG TÁC NHÀ VỆ SINH ---
+        function updateCampusSoccer(dt) {
+            if (soccerState.goalCooldown > 0) soccerState.goalCooldown -= dt;
+            const b = soccerState.ball;
+
+            // Người chơi chạm vào bóng sẽ tự động dẫn bóng
+            const distPlayer = Math.hypot(b.x - player.x, b.y - player.y);
+            if (distPlayer < player.radius + b.radius + 6) {
+                const nx = (b.x - player.x) / (distPlayer || 1);
+                const ny = (b.y - player.y) / (distPlayer || 1);
+                const pushSpeed = Math.max(190, Math.hypot(player.vx, player.vy) * 1.25);
+                b.vx = nx * pushSpeed;
+                b.vy = ny * pushSpeed;
+                playSound('hit');
+            }
+
+            // Cập nhật vị trí bóng & độ ma sát mặt cỏ
+            b.x += b.vx * dt;
+            b.y += b.vy * dt;
+            const friction = Math.pow(0.18, dt);
+            b.vx *= friction;
+            b.vy *= friction;
+            if (Math.hypot(b.vx, b.vy) < 5) {
+                b.vx = 0;
+                b.vy = 0;
+            }
+
+            // Kiểm tra ghi bàn vào Khung thành Trái (X <= 192) hoặc Khung thành Phải (X >= 838)
+            const inGoalY = b.y > 1392 && b.y < 1468;
+            if (soccerState.goalCooldown <= 0 && inGoalY) {
+                if (b.x <= 194) {
+                    soccerState.awayScore++;
+                    onSoccerGoalScored('Đội Khách');
+                    return;
+                } else if (b.x >= 836) {
+                    soccerState.homeScore++;
+                    onSoccerGoalScored(`Lớp ${player.className}`);
+                    return;
+                }
+            }
+
+            // Giới hạn bóng trong đường biên sân bóng (X: 189..841, Y: 1293..1572)
+            if (b.x < 189) { b.x = 189; b.vx = Math.abs(b.vx) * 0.7; }
+            if (b.x > 841) { b.x = 841; b.vx = -Math.abs(b.vx) * 0.7; }
+            if (b.y < 1293) { b.y = 1293; b.vy = Math.abs(b.vy) * 0.7; }
+            if (b.y > 1572) { b.y = 1572; b.vy = -Math.abs(b.vy) * 0.7; }
+        }
+
+        function onSoccerGoalScored(teamName) {
+            soccerState.goalCooldown = 2.0;
+            playSound('whistle');
+            setTimeout(() => playSound('score'), 220);
+            questState.playedGymSport = true;
+            updateQuestHUD();
+            player.waveTimer = 1.2;
+            player.emoteBubble = `⚽ VÀOOO!! Tỷ số: ${soccerState.homeScore} - ${soccerState.awayScore}!`;
+            player.emoteBubbleTimer = 3.8;
+            showBanner(`⚽ VÀOOO!! Bàn thắng tuyệt đẹp cho ${teamName}! (Tỷ số: ${soccerState.homeScore} - ${soccerState.awayScore})`, '⚽');
+            // Đặt lại bóng về vạch giao bóng giữa sân
+            soccerState.ball.x = 515;
+            soccerState.ball.y = 1430;
+            soccerState.ball.vx = 0;
+            soccerState.ball.vy = 0;
+        }
+
+        function kickSoccerBall() {
+            const b = soccerState.ball;
+            const dist = Math.hypot(b.x - player.x, b.y - player.y);
+            playSound('hit');
+            // Nếu đứng hơi xa bóng thì chạy tới sút thẳng về phía khung thành phải
+            const targetGoalX = player.x < 515 ? 842 : (player.facing === 'left' ? 185 : 842);
+            const targetGoalY = 1430 + (Math.random() - 0.5) * 45;
+            const dx = targetGoalX - b.x;
+            const dy = targetGoalY - b.y;
+            const d = Math.hypot(dx, dy) || 1;
+            const kickPower = dist < 95 ? 580 : 420;
+            b.vx = (dx / d) * kickPower;
+            b.vy = (dy / d) * kickPower;
+            player.waveTimer = 0.4;
+            player.emoteBubble = '⚽ Sút bóng sấm sét!!';
+            player.emoteBubbleTimer = 2.0;
+        }
+
+        function useRestroomSinkAndMirror() {
+            playSound('water');
+            player.waveTimer = 0.8;
+            player.emoteBubble = '🚰 Nước mát lạnh! Đẹp trai/xinh gái 10 điểm!';
+            player.emoteBubbleTimer = 3.2;
+            showDialogue(
+                'Bồn Rửa Tay & Gương Soi Học Đường',
+                'Khu Nhà Vệ Sinh THPT Ninh Giang',
+                '🪞',
+                `Nước mát lạnh giúp ${player.name} (${player.cohort} - Lớp ${player.className}) tỉnh táo 100% trước giờ học Toán Lớp 12! Bạn muốn làm gì tiếp theo?`,
+                [
+                    {
+                        text: '💇‍♂️ Soi gương đổi kiểu tóc / trang phục',
+                        onClick: () => {
+                            closeDialogue();
+                            window.openCustomizer();
+                        }
+                    },
+                    {
+                        text: '✨ Rửa mặt sảng khoái rồi đi tiếp',
+                        onClick: () => {
+                            playSound('score');
+                            closeDialogue();
+                        }
+                    }
+                ]
+            );
+        }
+
+        function useRestroomCubicle(wcType) {
+            playSound('door');
+            const label = wcType === 'male' ? 'WC Nam' : 'WC Nữ';
+            player.emoteBubble = `🚻 Đã giải lao tại ${label} xong, nhẹ cả người!`;
+            player.emoteBubbleTimer = 3.0;
+            showBanner(`🚻 Bạn vừa ghé ${label} giải lao giữa giờ, sẵn sàng vào tiết học tiếp theo!`, '🚻');
+        }
+
         function enterPortal(portal) {
             playSound('door');
             doorCooldown = 0.85;
@@ -4927,28 +5777,49 @@
             questState.visitedMainBuilding = true;
             updateQuestHUD();
             showDialogue(
-                `Bảng Xanh Lớp ${activeClassroomName} - Đố Vui Học Đường`,
-                'Trường THPT Ninh Giang',
-                '📝',
-                'Câu hỏi: Khẩu hiệu truyền thống nổi bật ngay trước sảnh tòa nhà 3 tầng và đài phun nước trường THPT Ninh Giang là gì?',
+                `📐 Bảng Xanh Toán Lớp 12 (${activeClassroomName}) - Thầy Nam & Cô Diệp`,
+                'Chuyên đề Giải Tích 12 - THPT Ninh Giang',
+                '📐',
+                `Cả lớp ${activeClassroomName} đang chăm chú nhìn lên bảng! Em hãy chọn giải 1 trong 2 câu hỏi Toán Lớp 12 trên bảng nhé:\n• Câu 1: Cho hàm số y = x³ - 3x + 2. Giá trị cực đại của hàm số là bao nhiêu?\n• Câu 2: Tính tích phân I = ∫₀¹ (2x + 1)dx?`,
                 [
                     {
-                        text: 'A. TIÊN HỌC LỄ - HẬU HỌC VĂN',
+                        text: 'A. y_CĐ = 4 (tại x = -1) và Tích phân I = 2',
                         onClick: () => {
                             playSound('score');
-                            player.emoteBubble = `💯 Lớp ${activeClassroomName} đạt 10 điểm!`;
-                            player.emoteBubbleTimer = 3.0;
+                            player.emoteBubble = `💯 Giải Toán 12 đạt 10 điểm! Cả lớp vỗ tay!`;
+                            player.emoteBubbleTimer = 4.0;
+                            // Cả lớp vỗ tay hưởng ứng
+                            mathClassStudents.forEach((stu, i) => {
+                                if (i % 2 === 0) {
+                                    stu.waveTimer = 2.2;
+                                    stu.emoteBubble = `👏 Giỏi quá ${player.name} ơi! 10 điểm Toán 12!`;
+                                    stu.emoteBubbleTimer = 3.5;
+                                }
+                            });
                             showDialogue(
-                                'Chính Xác 100%! 🌟',
+                                'Chính Xác Tuyệt Đối! 10 Điểm Toán Lớp 12! 🏆',
                                 `Lớp ${activeClassroomName} - THPT Ninh Giang`,
-                                '🏆',
-                                `Tuyệt vời lắm ${player.name}! "TIÊN HỌC LỄ - HẬU HỌC VĂN" chính là kim chỉ nam của bao thế hệ học sinh THPT Ninh Giang (Hải Dương)!`,
-                                [{ text: 'Cảm ơn thầy cô! ❤️', onClick: closeDialogue }]
+                                '🌟',
+                                `Thầy Nam & Cô Diệp khen ngợi ${player.name}: "Xuất sắc! Đạo hàm y' = 3x² - 3 = 0 ⇔ x = ±1, suy ra y_CĐ = y(-1) = 4 và tích phân ∫₀¹(2x+1)dx = [x²+x]₀¹ = 2. Cả lớp ${activeClassroomName} cho bạn một tràng pháo tay!"`,
+                                [{ text: 'Dạ em cảm ơn Thầy Cô và các bạn ạ! ❤️', onClick: closeDialogue }]
                             );
                         }
                     },
                     {
-                        text: 'Để em suy nghĩ thêm ạ',
+                        text: 'B. y_CĐ = 0 và Tích phân I = 1',
+                        onClick: () => {
+                            playSound('click');
+                            showDialogue(
+                                'Thử Lại Nhé! 💡',
+                                `Gợi ý Toán 12 - Lớp ${activeClassroomName}`,
+                                '📐',
+                                'Gợi ý của Thầy Nam: Em thay x = -1 vào y = x³ - 3x + 2 sẽ được (-1)³ - 3(-1) + 2 = 4 nhé!',
+                                [{ text: 'Dạ để em tính lại ngay ạ!', onClick: openClassroomQuiz }]
+                            );
+                        }
+                    },
+                    {
+                        text: 'Về chỗ ngồi ghi bài cùng cả lớp',
                         onClick: closeDialogue
                     }
                 ]
@@ -5110,6 +5981,14 @@
                 minimapCtx.fillStyle = '#e11d48';
                 minimapCtx.fillRect(2220 * scaleX, 620 * scaleY, 430 * scaleX, 620 * scaleY);
 
+                // Sân Bóng Đá (Tây Nam)
+                minimapCtx.fillStyle = '#16a34a';
+                minimapCtx.fillRect(165 * scaleX, 1265 * scaleY, 700 * scaleX, 335 * scaleY);
+
+                // Khu Nhà Vệ Sinh WC (Tây Bắc)
+                minimapCtx.fillStyle = '#0ea5e9';
+                minimapCtx.fillRect(200 * scaleX, 220 * scaleY, 450 * scaleX, 280 * scaleY);
+
                 // Main Gate
                 minimapCtx.fillStyle = '#f97316';
                 minimapCtx.fillRect(1195 * scaleX, 1630 * scaleY, 410 * scaleX, 45 * scaleY);
@@ -5228,6 +6107,26 @@
                     draw: () => drawCharacter(ctx, npc, npc.x, npc.y, 1, false)
                 });
             });
+
+            // Nếu đang ở trong Lớp 12 Học Toán: vẽ toàn bộ 18+ học sinh ngồi kín các dãy bàn học
+            if (currentScene === 'main_building') {
+                mathClassStudents.forEach(stu => {
+                    renderList.push({
+                        y: stu.y,
+                        draw: () => drawCharacter(ctx, stu, stu.x, stu.y, 1, false)
+                    });
+                });
+            }
+
+            // Nếu đang bật Chế độ Lễ Chào Cờ Toàn Trường ngoài sân: vẽ toàn bộ các khối lớp xếp hàng chào cờ
+            if (currentScene === 'campus' && flagCeremonyState.active) {
+                flagCeremonyState.crowd.forEach(stu => {
+                    renderList.push({
+                        y: stu.y,
+                        draw: () => drawCharacter(ctx, stu, stu.x, stu.y, 1, false)
+                    });
+                });
+            }
 
             // Render Online Remote Players in the same scene (up to 100 players)
             let renderedPeers = 0;
