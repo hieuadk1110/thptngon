@@ -133,7 +133,7 @@
                 <div class="min-w-0 flex-1">
                     <div class="flex items-center gap-1.5 flex-wrap">
                         <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-full border border-amber-400/30">THPT Ninh Giang</span>
-                        <span id="hudClassBadge" class="text-[10px] font-extrabold text-slate-950 bg-amber-400 px-2 py-0.5 rounded-full shadow">Lớp 12A</span>
+                        <span id="hudClassBadge" class="text-[10px] font-extrabold text-slate-950 bg-amber-400 px-2 py-0.5 rounded-full shadow">K60 • Lớp 12A</span>
                         <button type="button" onclick="window.toggleOnlinePlayersModal()" class="game-btn text-[10px] font-extrabold text-emerald-300 bg-emerald-500/20 hover:bg-emerald-500/35 px-2 py-0.5 rounded-full border border-emerald-400/40 flex items-center gap-1 shadow">
                             <span id="netStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                             <span id="onlineCountText">1 / 100 Online</span>
@@ -148,7 +148,7 @@
             <div class="flex flex-wrap items-center gap-1">
                 <button type="button" onclick="window.openCustomizer()" class="game-btn glass-panel rounded-xl px-2.5 py-1.5 text-[11px] font-bold text-sky-200 flex items-center gap-1 hover:bg-slate-800/80 border-sky-400/30">
                     <span>👕</span>
-                    <span>Đổi Đồ & Lớp</span>
+                    <span>Đổi Đồ, Lớp & Khóa</span>
                 </button>
                 <button type="button" onclick="window.toggleChatBox()" class="game-btn glass-panel rounded-xl px-2.5 py-1.5 text-[11px] font-bold text-amber-200 flex items-center gap-1 hover:bg-slate-800/80 border-amber-400/40 relative">
                     <span>💬</span>
@@ -174,6 +174,34 @@
                 <button type="button" onclick="window.toggleAudio()" id="audioBtn" class="game-btn glass-panel rounded-xl px-2.5 py-1.5 text-[11px] font-bold text-emerald-200 flex items-center">
                     <span id="audioIcon">🔊</span>
                 </button>
+            </div>
+
+            <!-- REAL-TIME VOICE CHAT BAR (MỞ MIC ĐÀM THOẠI CÙNG LỚP / KHÓA K52 - K61) -->
+            <div class="glass-panel rounded-xl px-2.5 py-1.5 text-white border border-rose-400/40 flex flex-wrap items-center gap-1.5">
+                <button type="button" id="btnMicToggle" onclick="window.toggleVoiceMic()" class="game-btn bg-slate-800 hover:bg-slate-700 text-slate-200 border border-white/25 rounded-lg px-2.5 py-1 text-[11px] font-extrabold flex items-center gap-1.5 shadow">
+                    <span id="micStatusIcon">🎙️</span>
+                    <span id="micStatusText">Mở Mic</span>
+                </button>
+                <button type="button" id="btnSpeakerToggle" onclick="window.toggleVoiceSpeaker()" class="game-btn bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-400/40 rounded-lg px-2 py-1 text-[10px] font-bold flex items-center gap-1" title="Bật/Tắt nghe đàm thoại">
+                    <span id="speakerStatusIcon">🔈</span>
+                    <span id="speakerStatusText" class="hidden sm:inline">Loa Mở</span>
+                </button>
+                <div class="flex items-center gap-1">
+                    <span class="text-[10px] text-amber-300 font-bold">Kênh Mic:</span>
+                    <select id="voiceChannelSelect" onchange="window.changeVoiceChannel(this.value)" class="bg-slate-900 text-amber-200 text-[10px] font-extrabold px-2 py-1 rounded-lg border border-amber-400/40 focus:outline-none cursor-pointer">
+                        <option value="cohort_class">Cùng Khóa & Lớp</option>
+                        <option value="cohort">Cùng Khóa (K52-K61)</option>
+                        <option value="class">Cùng Lớp (A..U)</option>
+                        <option value="all">Toàn Trường</option>
+                    </select>
+                </div>
+                <!-- Live Mic Volume Meter & Active Speaker Indicator -->
+                <div class="flex items-center gap-1.5 ml-auto">
+                    <div class="w-12 h-2 bg-slate-800 rounded-full overflow-hidden border border-white/15" title="Âm lượng Mic của bạn">
+                        <div id="micLevelBar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 transition-all duration-75" style="width: 0%"></div>
+                    </div>
+                    <span id="activeVoiceSpeakerBadge" class="text-[10px] text-emerald-300 font-bold truncate max-w-[110px] hidden">🔊 Đang nói...</span>
+                </div>
             </div>
 
             <!-- Quest Progress Bar -->
@@ -242,18 +270,19 @@
     </div>
 
     <!-- LIVE MULTIPLAYER CHAT PANEL (MAX 100 PLAYERS) -->
-    <div id="chatPanel" class="fixed bottom-44 sm:bottom-44 left-2 sm:left-4 z-30 w-72 sm:w-80 pointer-events-auto transition-all duration-200">
+    <div id="chatPanel" class="fixed bottom-44 sm:bottom-44 left-2 sm:left-4 z-30 w-72 sm:w-84 pointer-events-auto transition-all duration-200">
         <div class="glass-panel rounded-2xl overflow-hidden border border-amber-400/40 shadow-2xl flex flex-col">
             <!-- Chat Header -->
-            <div class="bg-slate-900/90 px-3 py-1.5 border-b border-white/15 flex items-center justify-between">
-                <div class="flex items-center gap-1.5">
+            <div class="bg-slate-900/90 px-2.5 py-1.5 border-b border-white/15 flex items-center justify-between gap-1">
+                <div class="flex items-center gap-1 shrink-0">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                    <span class="text-[11px] font-extrabold text-amber-300">💬 Chat Trực Tuyến (Max 100)</span>
+                    <span class="text-[10px] sm:text-[11px] font-extrabold text-amber-300">💬 Chat (100)</span>
                 </div>
-                <div class="flex items-center gap-1">
-                    <button type="button" id="chatTabAll" onclick="window.setChatFilter('all')" class="text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-500 text-slate-950 cursor-pointer">Toàn trường</button>
-                    <button type="button" id="chatTabClass" onclick="window.setChatFilter('class')" class="text-[10px] font-bold px-2 py-0.5 rounded bg-white/10 text-slate-300 hover:bg-white/20 cursor-pointer">Cùng lớp</button>
-                    <button type="button" onclick="window.toggleChatBox()" class="text-slate-400 hover:text-white text-xs font-bold px-1.5 cursor-pointer" title="Thu gọn">✕</button>
+                <div class="flex items-center gap-1 flex-wrap justify-end">
+                    <button type="button" id="chatTabAll" onclick="window.setChatFilter('all')" class="text-[9px] sm:text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-amber-500 text-slate-950 cursor-pointer">Toàn trường</button>
+                    <button type="button" id="chatTabClass" onclick="window.setChatFilter('class')" class="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-white/10 text-slate-300 hover:bg-white/20 cursor-pointer">Cùng lớp</button>
+                    <button type="button" id="chatTabCohort" onclick="window.setChatFilter('cohort')" class="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-white/10 text-slate-300 hover:bg-white/20 cursor-pointer">Cùng khóa</button>
+                    <button type="button" onclick="window.toggleChatBox()" class="text-slate-400 hover:text-white text-xs font-bold px-1 cursor-pointer" title="Thu gọn">✕</button>
                 </div>
             </div>
 
@@ -262,10 +291,10 @@
 
             <!-- Quick Chat Pills -->
             <div class="px-2 py-1 bg-slate-900/70 border-t border-white/10 flex items-center gap-1 overflow-x-auto no-scrollbar">
-                <button type="button" onclick="window.sendQuickChat('Chào cả trường nhé! 👋')" class="shrink-0 text-[10px] bg-white/10 hover:bg-amber-500/30 text-amber-200 px-2 py-0.5 rounded-full border border-white/10 cursor-pointer">👋 Chào cả trường</button>
-                <button type="button" onclick="window.sendQuickChat('Ra đài phun nước chụp ảnh đi! 📸')" class="shrink-0 text-[10px] bg-white/10 hover:bg-amber-500/30 text-amber-200 px-2 py-0.5 rounded-full border border-white/10 cursor-pointer">📸 Ra đài phun nước</button>
-                <button type="button" onclick="window.sendQuickChat('Vào Nhà Đa Năng đánh cầu không? 🏸')" class="shrink-0 text-[10px] bg-white/10 hover:bg-amber-500/30 text-amber-200 px-2 py-0.5 rounded-full border border-white/10 cursor-pointer">🏸 Giao lưu cầu lông</button>
-                <button type="button" onclick="window.sendQuickChat('Tự hào THPT Ninh Giang! ❤️')" class="shrink-0 text-[10px] bg-white/10 hover:bg-amber-500/30 text-amber-200 px-2 py-0.5 rounded-full border border-white/10 cursor-pointer">❤️ Tự hào Ninh Giang</button>
+                <button type="button" onclick="window.sendQuickChat('Điểm danh cùng lớp & cùng khóa nào! 👋')" class="shrink-0 text-[10px] bg-white/10 hover:bg-amber-500/30 text-amber-200 px-2 py-0.5 rounded-full border border-white/10 cursor-pointer">👋 Điểm danh Khóa/Lớp</button>
+                <button type="button" onclick="window.sendQuickChat('Ra đài phun nước gặp Cô Quyên chụp ảnh đi! 📸')" class="shrink-0 text-[10px] bg-white/10 hover:bg-amber-500/30 text-amber-200 px-2 py-0.5 rounded-full border border-white/10 cursor-pointer">📸 Chụp ảnh Đài phun nước</button>
+                <button type="button" onclick="window.sendQuickChat('Vào Nhà Đa Năng học thể dục Thầy Phúc không? 🏸')" class="shrink-0 text-[10px] bg-white/10 hover:bg-amber-500/30 text-amber-200 px-2 py-0.5 rounded-full border border-white/10 cursor-pointer">🏸 Nhà Đa Năng</button>
+                <button type="button" onclick="window.sendQuickChat('Tự hào K52-K61 THPT Ninh Giang! ❤️')" class="shrink-0 text-[10px] bg-white/10 hover:bg-amber-500/30 text-amber-200 px-2 py-0.5 rounded-full border border-white/10 cursor-pointer">❤️ Tự hào Ninh Giang</button>
             </div>
 
             <!-- Chat Input Form -->
@@ -284,7 +313,7 @@
                     <span class="text-2xl">🌐</span>
                     <div>
                         <div class="flex items-center gap-2">
-                            <h3 class="text-base sm:text-lg font-extrabold text-emerald-300">Máy Chủ Online THPT Ninh Giang</h3>
+                            <h3 class="text-base sm:text-lg font-extrabold text-emerald-300">Máy Chủ Online THPT Ninh Giang (K52 - K61)</h3>
                             <span id="modalOnlineBadge" class="text-xs font-black bg-emerald-500 text-slate-950 px-2.5 py-0.5 rounded-full">1 / 100 Người</span>
                         </div>
                         <p id="netProviderStatus" class="text-[11px] text-slate-300">Đang kết nối thời gian thực • Mã định danh của bạn: <span id="myFullUserIdDisplay" class="font-mono text-amber-300">...</span></p>
@@ -293,13 +322,15 @@
                 <button type="button" onclick="window.toggleOnlinePlayersModal()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-lg font-bold cursor-pointer">✕</button>
             </div>
 
-            <!-- Crowd Simulation Toggle & Server Info -->
-            <div class="bg-slate-900/80 rounded-2xl p-3 border border-white/15 mb-3 flex flex-wrap items-center justify-between gap-2">
-                <div class="text-xs text-slate-200">
-                    <div class="font-bold text-amber-300">✨ Chế độ Sân Trường Nhộn Nhịp (Bổ sung bạn học quanh trường)</div>
-                    <div class="text-[11px] text-slate-400">Ưu tiên hiển thị tối đa 100 người chơi thật đang online cùng lúc trên web</div>
+            <!-- Filter by All / Same Class / Same Cohort & Crowd Toggle -->
+            <div class="bg-slate-900/80 rounded-2xl p-3 border border-white/15 mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[11px] font-bold text-slate-300 mr-1">Lọc danh sách:</span>
+                    <button type="button" id="onlineFilterAll" onclick="window.setOnlineListFilter('all')" class="px-2.5 py-1 rounded-lg font-extrabold text-xs bg-amber-500 text-slate-950 cursor-pointer">Tất cả (Max 100)</button>
+                    <button type="button" id="onlineFilterClass" onclick="window.setOnlineListFilter('class')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white/10 text-slate-200 hover:bg-white/20 cursor-pointer">Cùng lớp</button>
+                    <button type="button" id="onlineFilterCohort" onclick="window.setOnlineListFilter('cohort')" class="px-2.5 py-1 rounded-lg font-bold text-xs bg-white/10 text-slate-200 hover:bg-white/20 cursor-pointer">Cùng khóa (K52-K61)</button>
                 </div>
-                <button type="button" id="btnToggleSimCrowd" onclick="window.toggleSimulatedCrowd()" class="px-3 py-1.5 rounded-xl font-extrabold text-xs bg-emerald-500 text-slate-950 shadow cursor-pointer">
+                <button type="button" id="btnToggleSimCrowd" onclick="window.toggleSimulatedCrowd()" class="px-3 py-1 rounded-xl font-extrabold text-xs bg-emerald-500 text-slate-950 shadow cursor-pointer shrink-0">
                     Đang Bật Bạn Học AI
                 </button>
             </div>
@@ -352,6 +383,12 @@
                 <span class="text-[8px] font-bold text-pink-200">Chào</span>
             </button>
 
+            <!-- Quick Floating Voice Mic Button on Gamepad -->
+            <button type="button" id="btnQuickMic" onclick="window.toggleVoiceMic()" class="action-circle absolute top-1 left-0 w-10 h-10 rounded-full flex flex-col items-center justify-center text-white" title="Bật/Tắt Mic Đàm Thoại (Phím V)">
+                <span id="btnQuickMicIcon" class="text-sm">🎙️</span>
+                <span class="text-[7px] font-bold text-rose-200">Mic</span>
+            </button>
+
             <!-- Camera / Snapshot Button -->
             <button type="button" id="btnPhoto" onclick="window.takeSchoolPhoto()" class="action-circle absolute top-0 right-1 w-12 h-12 sm:w-13 sm:h-13 p-2 rounded-full flex flex-col items-center justify-center text-white" title="Chụp ảnh kỷ niệm">
                 <span class="text-base sm:text-lg">📸</span>
@@ -377,7 +414,7 @@
                         <span>TRƯỜNG THPT NINH GIANG - HẢI DƯƠNG</span>
                     </div>
                     <h2 class="text-lg sm:text-2xl font-black text-slate-900 mt-1.5">Tạo Nhân Vật Học Sinh</h2>
-                    <p class="text-[11px] text-slate-600">Chọn trang phục, kiểu tóc & lớp (A, B, C, D, E, G, H, I, K)</p>
+                    <p class="text-[11px] text-slate-600">Chọn Khóa (K52 - K61) & Lớp (A, B, C, D, E, G, H, I, K, T, U)</p>
                 </div>
 
                 <!-- Live Animated Canvas Preview -->
@@ -394,19 +431,20 @@
                 <div class="w-full bg-white/95 rounded-2xl p-3 border border-amber-300 shadow-sm text-xs">
                     <div class="flex items-center justify-between border-b border-slate-200 pb-1.5 mb-1.5">
                         <span class="font-extrabold text-amber-800">🪪 THẺ HỌC SINH THPT NINH GIANG</span>
-                        <span id="cardClassBadge" class="text-[11px] font-black bg-amber-500 text-white px-2.5 py-0.5 rounded-full">Lớp 12A</span>
+                        <span id="cardClassBadge" class="text-[11px] font-black bg-amber-500 text-white px-2.5 py-0.5 rounded-full">K60 • Lớp 12A</span>
                     </div>
                     <div class="grid grid-cols-2 gap-1 text-slate-700">
                         <div>Họ tên: <strong id="cardNamePreview" class="text-slate-900">Minh Khôi</strong></div>
                         <div>Giới tính: <strong id="cardGenderPreview" class="text-slate-900">Nam</strong></div>
-                        <div class="col-span-2">Trường: <strong class="text-amber-700">THPT Ninh Giang - Hải Dương</strong></div>
+                        <div>Niên khóa: <strong id="cardCohortPreview" class="text-indigo-700">Khóa K60</strong></div>
+                        <div>Trường: <strong class="text-amber-700">THPT Ninh Giang</strong></div>
                     </div>
                 </div>
             </div>
 
             <!-- Right Column: Customization Controls -->
-            <div class="w-full md:w-7/12 p-4 sm:p-5 overflow-y-auto flex flex-col justify-between bg-white text-slate-800 space-y-3">
-                <div class="space-y-3">
+            <div class="w-full md:w-7/12 p-4 sm:p-5 overflow-y-auto flex flex-col justify-between bg-white text-slate-800 space-y-2.5">
+                <div class="space-y-2.5">
                     <!-- 1. Name & Gender -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                         <div>
@@ -429,18 +467,28 @@
                         </div>
                     </div>
 
-                    <!-- 3. Grade (10, 11, 12) & Class Letter (ONLY A, B, C, D, E, G, H, I, K) -->
-                    <div class="bg-amber-50/90 p-2.5 rounded-2xl border border-amber-200">
-                        <div class="flex items-center justify-between mb-1.5">
-                            <label class="text-[11px] font-extrabold uppercase tracking-wider text-amber-900">3. Chọn Khối & Lớp (A, B, C, D, E, G, H, I, K)</label>
-                            <span id="selectedClassLabel" class="text-xs font-black text-amber-800 bg-amber-200 px-2 py-0.5 rounded-lg">Đang chọn: Lớp 12A</span>
+                    <!-- 3. Cohort (K52 - K61), Grade (10, 11, 12) & Class Letter (A, B, C, D, E, G, H, I, K, T, U) -->
+                    <div class="bg-amber-50/90 p-2.5 rounded-2xl border border-amber-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-[11px] font-extrabold uppercase tracking-wider text-amber-900">3. Chọn Khóa (K52 - K61) & Lớp (A..K, T, U)</label>
+                            <span id="selectedClassLabel" class="text-xs font-black text-amber-800 bg-amber-200 px-2 py-0.5 rounded-lg">K60 • Lớp 12A</span>
                         </div>
-                        <div class="grid grid-cols-3 gap-1.5 mb-2">
+                        <!-- Cohort Selector K52 to K61 -->
+                        <div>
+                            <div class="text-[10px] font-bold text-slate-600 mb-1">Niên khóa (Hội ngộ K52 đến K61):</div>
+                            <div id="cohortContainer" class="grid grid-cols-5 sm:grid-cols-10 gap-1"></div>
+                        </div>
+                        <!-- Grade Selector -->
+                        <div class="grid grid-cols-3 gap-1.5">
                             <button type="button" id="grade12Btn" onclick="window.selectGrade('12')" class="option-pill selected py-1 rounded-lg border border-slate-300 font-extrabold text-xs">Khối 12</button>
                             <button type="button" id="grade11Btn" onclick="window.selectGrade('11')" class="option-pill py-1 rounded-lg border border-slate-300 font-extrabold text-xs">Khối 11</button>
                             <button type="button" id="grade10Btn" onclick="window.selectGrade('10')" class="option-pill py-1 rounded-lg border border-slate-300 font-extrabold text-xs">Khối 10</button>
                         </div>
-                        <div id="classLetterContainer" class="grid grid-cols-9 gap-1"></div>
+                        <!-- 11 Class Letters: A, B, C, D, E, G, H, I, K, T, U -->
+                        <div>
+                            <div class="text-[10px] font-bold text-slate-600 mb-1">Lớp học (Bao gồm cả lớp T và U):</div>
+                            <div id="classLetterContainer" class="grid grid-cols-6 sm:grid-cols-11 gap-1"></div>
+                        </div>
                     </div>
 
                     <!-- 4. Hairstyle -->
@@ -549,14 +597,77 @@
                     <span class="text-2xl bg-indigo-500/20 p-2 rounded-xl">📚</span>
                     <div>
                         <div id="fastTravelMyClassTitle" class="font-extrabold text-indigo-300 text-xs sm:text-sm">6. Vào Phòng Học Lớp 12A Của Bạn</div>
-                        <div class="text-[11px] text-slate-300">Ngồi bàn học, lên bảng giải đố & giao lưu cùng lớp</div>
+                        <div class="text-[11px] text-slate-300">Ngồi bàn học, lên bảng giải đố cùng Cô Diệp & Thầy Toàn</div>
                     </div>
                 </button>
             </div>
 
-            <!-- All 27 Classes Selector (10, 11, 12 x A, B, C, D, E, G, H, I, K) -->
+            <!-- Beloved Teachers Quick Teleport Section -->
+            <div class="bg-amber-500/10 rounded-2xl p-3.5 border border-amber-400/30 mb-3">
+                <div class="text-xs font-extrabold text-amber-300 uppercase tracking-wider mb-2">👩‍🏫 Gặp Gỡ Thầy Cô THPT Ninh Giang (Bấm Để Tới Chào Thầy Cô):</div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <button type="button" onclick="window.fastTravelTo('campus', 1290, 1385, 'Gặp Cô Quyên (Đài Phun Nước & Sảnh Chính)')" class="game-btn p-2 rounded-xl bg-white/10 hover:bg-amber-500/30 border border-white/15 text-left flex items-center gap-2">
+                        <span class="text-lg">👩‍🏫</span>
+                        <div class="min-w-0">
+                            <div class="font-extrabold text-xs text-amber-200 truncate">Cô Quyên</div>
+                            <div class="text-[10px] text-slate-300 truncate">Đài phun nước</div>
+                        </div>
+                    </button>
+                    <button type="button" onclick="window.fastTravelTo('campus', 1320, 945, 'Gặp Thầy Nam (Sảnh Tiên Học Lễ - Hậu Học Văn)')" class="game-btn p-2 rounded-xl bg-white/10 hover:bg-amber-500/30 border border-white/15 text-left flex items-center gap-2">
+                        <span class="text-lg">👨‍🏫</span>
+                        <div class="min-w-0">
+                            <div class="font-extrabold text-xs text-amber-200 truncate">Thầy Nam</div>
+                            <div class="text-[10px] text-slate-300 truncate">Trống trường</div>
+                        </div>
+                    </button>
+                    <button type="button" onclick="window.fastTravelTo('campus', 1420, 685, 'Gặp Cô Phương (Khuôn Viên Giữa 4 Tòa Nhà)')" class="game-btn p-2 rounded-xl bg-white/10 hover:bg-amber-500/30 border border-white/15 text-left flex items-center gap-2">
+                        <span class="text-lg">👩‍🏫</span>
+                        <div class="min-w-0">
+                            <div class="font-extrabold text-xs text-amber-200 truncate">Cô Phương</div>
+                            <div class="text-[10px] text-slate-300 truncate">Khuôn viên giữa</div>
+                        </div>
+                    </button>
+                    <button type="button" onclick="window.fastTravelTo('campus', 2130, 940, 'Gặp Cô Nhàn (Lối Vào Nhà Hiệu Bộ)')" class="game-btn p-2 rounded-xl bg-white/10 hover:bg-amber-500/30 border border-white/15 text-left flex items-center gap-2">
+                        <span class="text-lg">👩‍🏫</span>
+                        <div class="min-w-0">
+                            <div class="font-extrabold text-xs text-amber-200 truncate">Cô Nhàn</div>
+                            <div class="text-[10px] text-slate-300 truncate">Cánh phải Hiệu Bộ</div>
+                        </div>
+                    </button>
+                    <button type="button" onclick="window.fastTravelTo('campus', 995, 685, 'Gặp Cô Diệp (Hành Lang Tòa Học Đường)')" class="game-btn p-2 rounded-xl bg-white/10 hover:bg-amber-500/30 border border-white/15 text-left flex items-center gap-2">
+                        <span class="text-lg">👩‍🏫</span>
+                        <div class="min-w-0">
+                            <div class="font-extrabold text-xs text-amber-200 truncate">Cô Diệp</div>
+                            <div class="text-[10px] text-slate-300 truncate">Sân trường & Lớp</div>
+                        </div>
+                    </button>
+                    <button type="button" onclick="window.fastTravelTo('campus', 680, 930, 'Gặp Thầy Toàn (Sảnh Nhà Đa Năng & Truyền Thống)')" class="game-btn p-2 rounded-xl bg-white/10 hover:bg-amber-500/30 border border-white/15 text-left flex items-center gap-2">
+                        <span class="text-lg">👨‍🏫</span>
+                        <div class="min-w-0">
+                            <div class="font-extrabold text-xs text-amber-200 truncate">Thầy Toàn</div>
+                            <div class="text-[10px] text-slate-300 truncate">Cánh trái & Sảnh</div>
+                        </div>
+                    </button>
+                    <button type="button" onclick="window.fastTravelTo('gym', 590, 250, 'Gặp Thầy Phúc (Sân Thể Thao Nhà Đa Năng)')" class="game-btn p-2 rounded-xl bg-white/10 hover:bg-amber-500/30 border border-white/15 text-left flex items-center gap-2">
+                        <span class="text-lg">🏃‍♂️</span>
+                        <div class="min-w-0">
+                            <div class="font-extrabold text-xs text-amber-200 truncate">Thầy Phúc</div>
+                            <div class="text-[10px] text-slate-300 truncate">Nhà Đa Năng</div>
+                        </div>
+                    </button>
+                    <button type="button" onclick="window.fastTravelTo('admin_lab', 310, 230, 'Gặp Thầy Hiệu Trưởng (Bên Trong Nhà Hiệu Bộ)')" class="game-btn p-2 rounded-xl bg-white/10 hover:bg-amber-500/30 border border-white/15 text-left flex items-center gap-2">
+                        <span class="text-lg">👨‍💼</span>
+                        <div class="min-w-0">
+                            <div class="font-extrabold text-xs text-amber-200 truncate">Ban Giám Hiệu</div>
+                            <div class="text-[10px] text-slate-300 truncate">Nhà Hiệu Bộ</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- All 33 Classes Selector (10, 11, 12 x A, B, C, D, E, G, H, I, K, T, U) -->
             <div class="bg-slate-900/80 rounded-2xl p-3.5 border border-white/15">
-                <div class="text-xs font-extrabold text-amber-300 uppercase tracking-wider mb-2">🏫 Đi Vào Bất Kỳ Lớp Học Nào (Khối 12, 11, 10 - Hệ A, B, C, D, E, G, H, I, K):</div>
+                <div class="text-xs font-extrabold text-amber-300 uppercase tracking-wider mb-2">🏫 Đi Vào Bất Kỳ Lớp Học Nào (Khối 12, 11, 10 - Hệ A, B, C, D, E, G, H, I, K, T, U):</div>
                 <div id="allClassesQuickGrid" class="space-y-2"></div>
             </div>
         </div>
@@ -632,8 +743,9 @@
             c.stroke();
         }
 
-        // --- VALID CLASS LETTERS OF THPT NINH GIANG ---
-        const VALID_CLASS_LETTERS = ['A', 'B', 'C', 'D', 'E', 'G', 'H', 'I', 'K'];
+        // --- VALID COHORTS (K52 - K61) & CLASS LETTERS OF THPT NINH GIANG (INCLUDING T & U) ---
+        const VALID_COHORTS = ['K52', 'K53', 'K54', 'K55', 'K56', 'K57', 'K58', 'K59', 'K60', 'K61'];
+        const VALID_CLASS_LETTERS = ['A', 'B', 'C', 'D', 'E', 'G', 'H', 'I', 'K', 'T', 'U'];
         const VALID_GRADES = ['12', '11', '10'];
 
         // --- CUSTOMIZATION CATALOGS ---
@@ -669,6 +781,7 @@
         // --- PLAYER STATE ---
         const player = {
             name: 'Minh Khôi',
+            cohort: 'K60',
             grade: '12',
             classLetter: 'A',
             get className() {
@@ -698,7 +811,9 @@
             waveTimer: 0,
             emoteBubble: '👋 Chào trường THPT Ninh Giang!',
             emoteBubbleTimer: 3.5,
-            sitting: false
+            sitting: false,
+            isSpeaking: false,
+            voiceLevel: 0
         };
 
         let activeClassroomName = '12A';
@@ -769,7 +884,8 @@
 
         const chatMessages = [];
         const seenChatIds = new Set();
-        let chatFilter = 'all'; // 'all' or 'class'
+        let chatFilter = 'all'; // 'all', 'class', or 'cohort'
+        let onlineListFilter = 'all'; // 'all', 'class', or 'cohort'
         let chatBoxCollapsed = false;
         let unreadChatCount = 0;
 
@@ -778,15 +894,297 @@
         let lastNetworkSyncTime = 0;
         let networkConnectedType = 'Đang kết nối...';
 
-        // Initialize simulated classmates so the campus feels lively while real players join
+        // ============================================================================
+        // REAL-TIME VOICE CHAT ENGINE (MỞ MIC ĐÀM THOẠI CÙNG LỚP / CÙNG KHÓA K52-K61)
+        // Uses Web Audio API + MediaRecorder chunks over WebSocket MQTT & BroadcastChannel
+        // ============================================================================
+        const voiceState = {
+            micEnabled: false,
+            speakerEnabled: true,
+            channelMode: 'cohort_class', // 'cohort_class', 'cohort', 'class', 'all'
+            stream: null,
+            analyser: null,
+            dataArray: null,
+            mediaRecorder: null,
+            chunkInterval: null
+        };
+
+        function getActiveVoiceChannelId() {
+            if (voiceState.channelMode === 'cohort_class') {
+                return `cc_${player.cohort}_${player.className}`;
+            }
+            if (voiceState.channelMode === 'cohort') {
+                return `cohort_${player.cohort}`;
+            }
+            if (voiceState.channelMode === 'class') {
+                return `class_${player.className}`;
+            }
+            return 'school_all';
+        }
+
+        function getVoiceChannelDisplayName() {
+            if (voiceState.channelMode === 'cohort_class') return `${player.cohort} - Lớp ${player.className}`;
+            if (voiceState.channelMode === 'cohort') return `Khóa ${player.cohort}`;
+            if (voiceState.channelMode === 'class') return `Lớp ${player.className} (Mọi khóa)`;
+            return 'Toàn Trường THPT Ninh Giang';
+        }
+
+        window.changeVoiceChannel = function(newMode) {
+            voiceState.channelMode = newMode || 'cohort_class';
+            playSound('click');
+            showBanner(`🎙️ Đã chuyển Kênh Đàm Thoại Mic sang: ${getVoiceChannelDisplayName()}`, '🎙️');
+            if (mqttClient && mqttClient.connected) {
+                try {
+                    mqttClient.subscribe(`${ROOM_TOPIC_PREFIX}/voice/+`);
+                } catch (e) {}
+            }
+        };
+
+        window.toggleVoiceSpeaker = function() {
+            voiceState.speakerEnabled = !voiceState.speakerEnabled;
+            const iconEl = document.getElementById('speakerStatusIcon');
+            const textEl = document.getElementById('speakerStatusText');
+            const btnEl = document.getElementById('btnSpeakerToggle');
+            if (iconEl) iconEl.textContent = voiceState.speakerEnabled ? '🔈' : '🔇';
+            if (textEl) textEl.textContent = voiceState.speakerEnabled ? 'Loa Mở' : 'Loa Tắt';
+            if (btnEl) {
+                btnEl.className = voiceState.speakerEnabled
+                    ? 'game-btn bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-400/40 rounded-lg px-2 py-1 text-[10px] font-bold flex items-center gap-1'
+                    : 'game-btn bg-slate-800 text-slate-400 border border-white/15 rounded-lg px-2 py-1 text-[10px] font-bold flex items-center gap-1';
+            }
+            playSound('click');
+        };
+
+        window.toggleVoiceMic = async function() {
+            if (voiceState.micEnabled) {
+                stopVoiceMic();
+                return;
+            }
+            try {
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    showBanner('⚠️ Trình duyệt của bạn không hỗ trợ mở Mic trực tiếp!', '🎙️');
+                    return;
+                }
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    audio: {
+                        echoCancellation: true,
+                        noiseSuppression: true,
+                        autoGainControl: true
+                    }
+                });
+                voiceState.stream = stream;
+                voiceState.micEnabled = true;
+
+                initAudio();
+                if (audioCtx) {
+                    const source = audioCtx.createMediaStreamSource(stream);
+                    const analyser = audioCtx.createAnalyser();
+                    analyser.fftSize = 256;
+                    source.connect(analyser);
+                    voiceState.analyser = analyser;
+                    voiceState.dataArray = new Uint8Array(analyser.frequencyBinCount);
+                }
+
+                // Start MediaRecorder to stream short live audio chunks to peers in the same Class/Cohort
+                startVoiceChunkStreaming(stream);
+                updateMicButtonUI();
+                playSound('score');
+                player.emoteBubble = `🎙️ Đang bật Mic (${getVoiceChannelDisplayName()})`;
+                player.emoteBubbleTimer = 3.0;
+                showBanner(`🎙️ Đã MỞ MIC đàm thoại kênh: ${getVoiceChannelDisplayName()}!`, '🎙️');
+                broadcastMyPlayerState(true);
+            } catch (err) {
+                showBanner('⚠️ Vui lòng cấp quyền Micro trên trình duyệt để nói chuyện cùng Lớp & Khóa!', '🎙️');
+            }
+        };
+
+        function stopVoiceMic() {
+            voiceState.micEnabled = false;
+            player.isSpeaking = false;
+            player.voiceLevel = 0;
+
+            if (voiceState.chunkInterval) {
+                clearInterval(voiceState.chunkInterval);
+                voiceState.chunkInterval = null;
+            }
+            if (voiceState.mediaRecorder && voiceState.mediaRecorder.state !== 'inactive') {
+                try { voiceState.mediaRecorder.stop(); } catch (e) {}
+            }
+            voiceState.mediaRecorder = null;
+
+            if (voiceState.stream) {
+                voiceState.stream.getTracks().forEach(t => t.stop());
+                voiceState.stream = null;
+            }
+            voiceState.analyser = null;
+            updateMicButtonUI();
+            const bar = document.getElementById('micLevelBar');
+            if (bar) bar.style.width = '0%';
+            playSound('click');
+            showBanner('🔇 Đã tắt Mic đàm thoại', '🔇');
+            broadcastMyPlayerState(true);
+        }
+
+        function updateMicButtonUI() {
+            const btn = document.getElementById('btnMicToggle');
+            const icon = document.getElementById('micStatusIcon');
+            const text = document.getElementById('micStatusText');
+            const quickBtn = document.getElementById('btnQuickMic');
+            const quickIcon = document.getElementById('btnQuickMicIcon');
+
+            if (voiceState.micEnabled) {
+                if (btn) btn.className = 'game-btn bg-rose-600 hover:bg-rose-500 text-white border border-rose-300 rounded-lg px-2.5 py-1 text-[11px] font-extrabold flex items-center gap-1.5 shadow-lg shadow-rose-600/40 animate-pulse';
+                if (icon) icon.textContent = '🎙️';
+                if (text) text.textContent = 'Đang Mở Mic';
+                if (quickBtn) quickBtn.classList.add('active-press');
+                if (quickIcon) quickIcon.textContent = '🔊';
+            } else {
+                if (btn) btn.className = 'game-btn bg-slate-800 hover:bg-slate-700 text-slate-200 border border-white/25 rounded-lg px-2.5 py-1 text-[11px] font-extrabold flex items-center gap-1.5 shadow';
+                if (icon) icon.textContent = '🎙️';
+                if (text) text.textContent = 'Mở Mic';
+                if (quickBtn) quickBtn.classList.remove('active-press');
+                if (quickIcon) quickIcon.textContent = '🎙️';
+            }
+        }
+
+        function startVoiceChunkStreaming(stream) {
+            if (typeof MediaRecorder === 'undefined') return;
+            try {
+                let mimeType = '';
+                if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+                    mimeType = 'audio/webm;codecs=opus';
+                } else if (MediaRecorder.isTypeSupported('audio/webm')) {
+                    mimeType = 'audio/webm';
+                } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+                    mimeType = 'audio/mp4';
+                }
+
+                const recordCycle = () => {
+                    if (!voiceState.micEnabled || !voiceState.stream) return;
+                    try {
+                        const recorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
+                        const chunks = [];
+                        recorder.ondataavailable = (e) => {
+                            if (e.data && e.data.size > 0) chunks.push(e.data);
+                        };
+                        recorder.onstop = () => {
+                            if (!voiceState.micEnabled || chunks.length === 0 || !player.isSpeaking) return;
+                            const blob = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
+                            if (blob.size > 42000) return; // Keep payload compact for MQTT
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                                const base64Audio = reader.result;
+                                if (typeof base64Audio === 'string') {
+                                    broadcastVoicePacket(base64Audio);
+                                }
+                            };
+                            reader.readAsDataURL(blob);
+                        };
+                        recorder.start();
+                        voiceState.mediaRecorder = recorder;
+                        setTimeout(() => {
+                            if (recorder.state === 'recording') {
+                                try { recorder.stop(); } catch (e) {}
+                            }
+                        }, 550);
+                    } catch (e) {}
+                };
+
+                recordCycle();
+                voiceState.chunkInterval = setInterval(recordCycle, 600);
+            } catch (err) {}
+        }
+
+        function broadcastVoicePacket(audioDataUrl) {
+            const channelId = getActiveVoiceChannelId();
+            const packet = {
+                senderId: myClientId,
+                senderName: player.name || 'Học Sinh',
+                cohort: player.cohort || 'K60',
+                className: player.className || '12A',
+                channelId: channelId,
+                audio: audioDataUrl,
+                timestamp: Date.now()
+            };
+
+            if (mqttClient && mqttClient.connected) {
+                try {
+                    mqttClient.publish(`${ROOM_TOPIC_PREFIX}/voice/${channelId}`, JSON.stringify(packet));
+                } catch (e) {}
+            }
+            if (localBroadcastChannel) {
+                try {
+                    localBroadcastChannel.postMessage({ type: 'voice', payload: packet });
+                } catch (e) {}
+            }
+        }
+
+        function handleIncomingVoicePacket(packet) {
+            if (!packet || !packet.senderId || packet.senderId === myClientId) return;
+            if (!voiceState.speakerEnabled) return;
+
+            // Check if packet matches our current selected voice channel or is a match for our cohort/class
+            const myChannelId = getActiveVoiceChannelId();
+            const matchesChannel = (
+                packet.channelId === myChannelId ||
+                packet.channelId === 'school_all' ||
+                (voiceState.channelMode === 'all')
+            );
+            if (!matchesChannel) return;
+
+            // Highlight speaking remote player
+            const rp = remotePlayers.get(packet.senderId);
+            if (rp) {
+                rp.isSpeaking = true;
+                rp.speakingTimer = 1.2;
+            }
+
+            const badge = document.getElementById('activeVoiceSpeakerBadge');
+            if (badge) {
+                badge.textContent = `🔊 ${packet.senderName} (${packet.cohort}-${packet.className})`;
+                badge.classList.remove('hidden');
+                clearTimeout(badge._hideTimer);
+                badge._hideTimer = setTimeout(() => badge.classList.add('hidden'), 1400);
+            }
+
+            if (packet.audio && typeof packet.audio === 'string' && packet.audio.startsWith('data:audio')) {
+                try {
+                    const audioEl = new Audio(packet.audio);
+                    audioEl.volume = 0.9;
+                    audioEl.play().catch(() => {});
+                } catch (e) {}
+            }
+        }
+
+        function updateLocalVoiceMeter() {
+            if (!voiceState.micEnabled || !voiceState.analyser || !voiceState.dataArray) {
+                player.isSpeaking = false;
+                player.voiceLevel = 0;
+                return;
+            }
+            voiceState.analyser.getByteFrequencyData(voiceState.dataArray);
+            let sum = 0;
+            for (let i = 0; i < voiceState.dataArray.length; i++) {
+                sum += voiceState.dataArray[i];
+            }
+            const avg = sum / voiceState.dataArray.length;
+            const norm = Math.min(100, Math.round((avg / 95) * 100));
+            player.voiceLevel = norm;
+            player.isSpeaking = norm > 14;
+
+            const bar = document.getElementById('micLevelBar');
+            if (bar) bar.style.width = `${norm}%`;
+        }
+
+        // Initialize simulated classmates across K52-K61 & classes A..U so the campus feels lively while real players join
         function initSimulatedSchoolmates() {
             const samplePeers = [
-                { id: 'sim_1', name: 'Đức Anh', grade: '12', classLetter: 'A', gender: 'male', outfit: 'uniform_shirt', hairStyle: 'korean_part', hairColor: '#1c1917', hairHighlight: '#44403c', x: 1350, y: 1450, homeX: 1350, homeY: 1450, scene: 'campus', msg: 'Đài phun nước trường mình đẹp thật!' },
-                { id: 'sim_2', name: 'Minh Châu', grade: '12', classLetter: 'B', gender: 'female', outfit: 'ao_dai', hairStyle: 'long_straight', hairColor: '#5c341d', hairHighlight: '#854d2b', x: 1460, y: 1430, homeX: 1460, homeY: 1430, scene: 'campus', msg: 'Chào các bạn khóa 12 nhé! 👋' },
-                { id: 'sim_3', name: 'Hải Đăng', grade: '11', classLetter: 'C', gender: 'male', outfit: 'pe_uniform', hairStyle: 'short_neat', hairColor: '#1c1917', hairHighlight: '#44403c', x: 1390, y: 810, homeX: 1390, homeY: 810, scene: 'campus', msg: 'Khuôn viên giữa 4 tòa nhà mát quá!' },
-                { id: 'sim_4', name: 'Thu Trang', grade: '10', classLetter: 'I', gender: 'female', outfit: 'class_shirt', hairStyle: 'ponytail', hairColor: '#691b26', hairHighlight: '#9e2a3b', x: 1510, y: 720, homeX: 1510, homeY: 720, scene: 'campus', msg: 'Có ai học lớp 10I không điểm danh nào!' },
-                { id: 'sim_5', name: 'Quốc Bảo', grade: '12', classLetter: 'D', gender: 'male', outfit: 'winter_jacket', hairStyle: 'wavy_soft', hairColor: '#785233', hairHighlight: '#a37249', x: 1290, y: 1120, homeX: 1290, homeY: 1120, scene: 'campus', msg: 'Đi qua sảnh Tiên Học Lễ - Hậu Học Văn nào!' },
-                { id: 'sim_6', name: 'Diệu Linh', grade: '11', classLetter: 'G', gender: 'female', outfit: 'uniform_shirt', hairStyle: 'bob_cut', hairColor: '#1c1917', hairHighlight: '#44403c', x: 420, y: 420, homeX: 420, homeY: 420, scene: 'gym', msg: 'Vào Nhà Đa Năng ném bóng rổ đi mọi người! 🏀' }
+                { id: 'sim_1', name: 'Đức Anh', cohort: 'K60', grade: '12', classLetter: 'T', gender: 'male', outfit: 'uniform_shirt', hairStyle: 'korean_part', hairColor: '#1c1917', hairHighlight: '#44403c', x: 1350, y: 1450, homeX: 1350, homeY: 1450, scene: 'campus', msg: 'Lớp 12T Khóa K60 điểm danh bên Cô Quyên nhé!' },
+                { id: 'sim_2', name: 'Minh Châu', cohort: 'K59', grade: '12', classLetter: 'U', gender: 'female', outfit: 'ao_dai', hairStyle: 'long_straight', hairColor: '#5c341d', hairHighlight: '#854d2b', x: 1460, y: 1430, homeX: 1460, homeY: 1430, scene: 'campus', msg: 'Chào các bạn lớp 12U và anh chị K52 - K61 nhé! 👋' },
+                { id: 'sim_3', name: 'Hải Đăng', cohort: 'K60', grade: '11', classLetter: 'C', gender: 'male', outfit: 'pe_uniform', hairStyle: 'short_neat', hairColor: '#1c1917', hairHighlight: '#44403c', x: 1390, y: 810, homeX: 1390, homeY: 810, scene: 'campus', msg: 'Đứng ở khuôn viên giữa trường trò chuyện với Cô Phương vui quá!' },
+                { id: 'sim_4', name: 'Thu Trang', cohort: 'K61', grade: '10', classLetter: 'I', gender: 'female', outfit: 'class_shirt', hairStyle: 'ponytail', hairColor: '#691b26', hairHighlight: '#9e2a3b', x: 1510, y: 720, homeX: 1510, homeY: 720, scene: 'campus', msg: 'K61 lớp 10I, 10T, 10U có ai online không nào!' },
+                { id: 'sim_5', name: 'Quốc Bảo', cohort: 'K56', grade: '12', classLetter: 'A', gender: 'male', outfit: 'winter_jacket', hairStyle: 'wavy_soft', hairColor: '#785233', hairHighlight: '#a37249', x: 1290, y: 1120, homeX: 1290, homeY: 1120, scene: 'campus', msg: 'Cựu học sinh K56 về thăm Thầy Nam, Thầy Toàn đây!' },
+                { id: 'sim_6', name: 'Diệu Linh', cohort: 'K58', grade: '11', classLetter: 'T', gender: 'female', outfit: 'uniform_shirt', hairStyle: 'bob_cut', hairColor: '#1c1917', hairHighlight: '#44403c', x: 420, y: 420, homeX: 420, homeY: 420, scene: 'gym', msg: 'Vào Nhà Đa Năng tập bóng rổ cùng Thầy Phúc đi mọi người! 🏀' }
             ];
             samplePeers.forEach((p, idx) => {
                 simulatedSchoolmates.set(p.id, {
@@ -812,6 +1210,7 @@
             return {
                 id: myClientId,
                 name: (player.name || 'Học Sinh').slice(0, 20),
+                cohort: player.cohort || 'K60',
                 grade: player.grade || '12',
                 classLetter: player.classLetter || 'A',
                 className: player.className || '12A',
@@ -829,6 +1228,7 @@
                 isMoving: Boolean(player.isMoving),
                 sitting: Boolean(player.sitting),
                 waveTimer: player.waveTimer > 0 ? 1 : 0,
+                isSpeaking: Boolean(player.isSpeaking),
                 emoteBubble: player.emoteBubble || null,
                 lastSeen: Date.now()
             };
@@ -845,6 +1245,7 @@
             const existing = remotePlayers.get(data.id);
             if (existing) {
                 existing.name = data.name || existing.name;
+                existing.cohort = data.cohort || existing.cohort || 'K60';
                 existing.grade = data.grade || existing.grade;
                 existing.classLetter = data.classLetter || existing.classLetter;
                 existing.className = data.className || `${existing.grade}${existing.classLetter}`;
@@ -866,6 +1267,10 @@
                 existing.facing = data.facing || existing.facing;
                 existing.isMoving = Boolean(data.isMoving);
                 existing.sitting = Boolean(data.sitting);
+                if (data.isSpeaking) {
+                    existing.isSpeaking = true;
+                    existing.speakingTimer = 0.8;
+                }
                 if (data.waveTimer > 0) existing.waveTimer = 1.0;
                 if (data.emoteBubble && data.emoteBubble !== existing.emoteBubble) {
                     existing.emoteBubble = data.emoteBubble;
@@ -876,6 +1281,7 @@
                 remotePlayers.set(data.id, {
                     id: data.id,
                     name: data.name || 'Học Sinh',
+                    cohort: data.cohort || 'K60',
                     grade: data.grade || '12',
                     classLetter: data.classLetter || 'A',
                     className: data.className || '12A',
@@ -941,7 +1347,9 @@
             if (!listEl) return;
 
             const filtered = chatMessages.filter(m => {
-                if (chatFilter === 'class') return m.className === player.className || m.isSystem;
+                if (m.isSystem) return true;
+                if (chatFilter === 'class') return m.className === player.className;
+                if (chatFilter === 'cohort') return (m.cohort || 'K60') === player.cohort;
                 return true;
             });
 
@@ -956,7 +1364,7 @@
                     row.className = 'leading-snug break-words bg-white/5 px-2 py-1 rounded-lg';
                     const badgeSpan = document.createElement('span');
                     badgeSpan.className = `inline-block text-[9px] font-black px-1.5 py-0.2 rounded mr-1 ${isMe ? 'bg-amber-400 text-slate-950' : 'bg-sky-500/30 text-sky-200 border border-sky-400/30'}`;
-                    badgeSpan.textContent = m.className || '12A';
+                    badgeSpan.textContent = `${m.cohort || 'K60'} • ${m.className || '12A'}`;
 
                     const nameSpan = document.createElement('span');
                     nameSpan.className = `font-extrabold text-[11px] mr-1 ${isMe ? 'text-amber-300' : 'text-emerald-300'}`;
@@ -977,12 +1385,20 @@
 
         window.setChatFilter = function(filterType) {
             chatFilter = filterType;
-            document.getElementById('chatTabAll').className = filterType === 'all'
-                ? 'text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-500 text-slate-950 cursor-pointer'
-                : 'text-[10px] font-bold px-2 py-0.5 rounded bg-white/10 text-slate-300 hover:bg-white/20 cursor-pointer';
-            document.getElementById('chatTabClass').className = filterType === 'class'
-                ? 'text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-500 text-slate-950 cursor-pointer'
-                : 'text-[10px] font-bold px-2 py-0.5 rounded bg-white/10 text-slate-300 hover:bg-white/20 cursor-pointer';
+            const activeCls = 'text-[9px] sm:text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-amber-500 text-slate-950 cursor-pointer';
+            const inactiveCls = 'text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded bg-white/10 text-slate-300 hover:bg-white/20 cursor-pointer';
+            const tabAll = document.getElementById('chatTabAll');
+            const tabClass = document.getElementById('chatTabClass');
+            const tabCohort = document.getElementById('chatTabCohort');
+            if (tabAll) tabAll.className = filterType === 'all' ? activeCls : inactiveCls;
+            if (tabClass) {
+                tabClass.className = filterType === 'class' ? activeCls : inactiveCls;
+                tabClass.textContent = `Lớp ${player.className}`;
+            }
+            if (tabCohort) {
+                tabCohort.className = filterType === 'cohort' ? activeCls : inactiveCls;
+                tabCohort.textContent = `Khóa ${player.cohort}`;
+            }
             renderChatMessagesUI();
         };
 
@@ -1010,6 +1426,7 @@
                 msgId: 'msg_' + myClientId + '_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
                 senderId: myClientId,
                 senderName: player.name || 'Học Sinh',
+                cohort: player.cohort || 'K60',
                 className: player.className || '12A',
                 text: text,
                 timestamp: Date.now()
@@ -1096,6 +1513,7 @@
                         if (!msg) return;
                         if (msg.type === 'state') handleIncomingPlayerState(msg.payload);
                         else if (msg.type === 'chat') handleIncomingChatMessage(msg.payload);
+                        else if (msg.type === 'voice') handleIncomingVoicePacket(msg.payload);
                     };
                 }
             } catch (e) {}
@@ -1122,6 +1540,7 @@
                             updateOnlineCountUI();
                             mqttClient.subscribe(`${ROOM_TOPIC_PREFIX}/state/+`);
                             mqttClient.subscribe(`${ROOM_TOPIC_PREFIX}/chat`);
+                            mqttClient.subscribe(`${ROOM_TOPIC_PREFIX}/voice/+`);
                             broadcastMyPlayerState(true);
                         });
 
@@ -1130,6 +1549,8 @@
                                 const parsed = JSON.parse(message.toString());
                                 if (topic.endsWith('/chat')) {
                                     handleIncomingChatMessage(parsed);
+                                } else if (topic.includes('/voice/')) {
+                                    handleIncomingVoicePacket(parsed);
                                 } else if (topic.includes('/state/')) {
                                     handleIncomingPlayerState(parsed);
                                 }
@@ -1251,15 +1672,44 @@
                 target.scene || 'campus',
                 (target.x || 1400) + 36,
                 (target.y || 1460) + 12,
-                `Đến chỗ ${target.name} (Lớp ${target.className})`
+                `Đến chỗ ${target.name} (${target.cohort || 'K60'} - Lớp ${target.className})`
             );
+        };
+
+        window.setOnlineListFilter = function(filterMode) {
+            onlineListFilter = filterMode;
+            const activeBtn = 'px-2.5 py-1 rounded-lg font-extrabold text-xs bg-amber-500 text-slate-950 cursor-pointer';
+            const inactiveBtn = 'px-2.5 py-1 rounded-lg font-bold text-xs bg-white/10 text-slate-200 hover:bg-white/20 cursor-pointer';
+            const fAll = document.getElementById('onlineFilterAll');
+            const fClass = document.getElementById('onlineFilterClass');
+            const fCohort = document.getElementById('onlineFilterCohort');
+            if (fAll) fAll.className = filterMode === 'all' ? activeBtn : inactiveBtn;
+            if (fClass) {
+                fClass.className = filterMode === 'class' ? activeBtn : inactiveBtn;
+                fClass.textContent = `Cùng lớp (${player.className})`;
+            }
+            if (fCohort) {
+                fCohort.className = filterMode === 'cohort' ? activeBtn : inactiveBtn;
+                fCohort.textContent = `Cùng khóa (${player.cohort})`;
+            }
+            renderOnlinePlayersModalList();
         };
 
         function renderOnlinePlayersModalList() {
             const container = document.getElementById('onlinePlayersListContainer');
             if (!container) return;
-            const list = getActiveOnlinePlayersList();
+            const rawList = getActiveOnlinePlayersList();
+            const list = rawList.filter(p => {
+                if (onlineListFilter === 'class') return p.className === player.className;
+                if (onlineListFilter === 'cohort') return (p.cohort || 'K60') === player.cohort;
+                return true;
+            });
             container.innerHTML = '';
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="text-center text-slate-400 text-xs py-6">Chưa có học sinh nào thuộc bộ lọc này đang trực tuyến. Hãy mời thêm bạn bè cùng lớp/khóa vào chơi nhé!</div>`;
+                return;
+            }
 
             list.forEach(p => {
                 const item = document.createElement('div');
@@ -1278,6 +1728,10 @@
                 const titleRow = document.createElement('div');
                 titleRow.className = 'flex items-center gap-1.5 flex-wrap';
 
+                const cohortBadge = document.createElement('span');
+                cohortBadge.className = 'text-[10px] font-black bg-indigo-500 text-white px-2 py-0.5 rounded-full';
+                cohortBadge.textContent = p.cohort || 'K60';
+
                 const classBadge = document.createElement('span');
                 classBadge.className = 'text-[10px] font-black bg-amber-400 text-slate-950 px-2 py-0.5 rounded-full';
                 classBadge.textContent = `Lớp ${p.className || '12A'}`;
@@ -1290,6 +1744,7 @@
                 tagEl.className = `text-[9px] font-bold px-1.5 py-0.5 rounded ${p.isSimulated ? 'bg-sky-500/20 text-sky-300' : 'bg-emerald-500/20 text-emerald-300'}`;
                 tagEl.textContent = p.isSimulated ? 'Bạn học AI' : '🟢 Trực tuyến';
 
+                titleRow.appendChild(cohortBadge);
                 titleRow.appendChild(classBadge);
                 titleRow.appendChild(nameEl);
                 titleRow.appendChild(tagEl);
@@ -1716,14 +2171,32 @@
                 fillRoundRect(c, 10.5, -44 + bobY, 4, 8, 2);
             }
 
+            // 9.5. Animated Voice Chat Soundwave Rings when speaking on Mic!
+            if (charObj.isSpeaking) {
+                const pulse = ((charObj.animTimer || 0) * 4) % 1;
+                c.strokeStyle = `rgba(52, 211, 153, ${1 - pulse})`;
+                c.lineWidth = 2.2;
+                c.beginPath();
+                c.arc(0, -42 + bobY, 15 + pulse * 14, 0, Math.PI * 2);
+                c.stroke();
+
+                c.strokeStyle = 'rgba(251, 191, 36, 0.85)';
+                c.lineWidth = 1.6;
+                c.beginPath();
+                c.arc(0, -42 + bobY, 13.5, 0, Math.PI * 2);
+                c.stroke();
+            }
+
             // 10. Floating Nameplate & Emote Bubble (Only in Main World)
             if (!isPreview) {
                 const displayName = charObj.name || 'Học Sinh';
                 const isMainPlayer = charObj === player;
                 const isOnlinePeer = Boolean(charObj.className);
+                const cohortTag = charObj.cohort ? `${charObj.cohort} - ` : '';
+                const micTag = charObj.isSpeaking ? '🎙️🔊 ' : '';
                 const badgeText = isMainPlayer
-                    ? `🟢 [${player.className}] ${displayName}`
-                    : (isOnlinePeer ? `🟢 [${charObj.className}] ${displayName}` : displayName);
+                    ? `${micTag}🟢 [${player.cohort} - ${player.className}] ${displayName}`
+                    : (isOnlinePeer ? `${micTag}🟢 [${cohortTag}${charObj.className}] ${displayName}` : displayName);
 
                 c.font = '800 10.5px "Be Vietnam Pro", sans-serif';
                 const textW = c.measureText(badgeText).width;
@@ -1829,7 +2302,7 @@
                         targetScene: 'admin_lab', targetX: 330, targetY: 675,
                         label: 'Vào Nhà Hiệu Bộ (Khu Hành Chính Bên Phải)', icon: '🏛️'
                     },
-                    // SOUTH 3-STORY BUILDING: Khối 12 Classrooms (12A..12K)
+                    // SOUTH 3-STORY BUILDING: Khối 12 Classrooms (12A..12U)
                     {
                         x: 1040, y: 1180, w: 80, h: 40,
                         targetScene: 'main_building', targetX: 340, targetY: 660,
@@ -1839,8 +2312,8 @@
                     {
                         x: 1760, y: 1180, w: 80, h: 40,
                         targetScene: 'main_building', targetX: 340, targetY: 660,
-                        classCode: '12G',
-                        label: 'Vào Phòng Học Lớp 12G - 12K (Tòa 3 Tầng)', icon: '🏫'
+                        classCode: '12T',
+                        label: 'Vào Phòng Học Lớp 12G - 12K, 12T, 12U (Tòa 3 Tầng)', icon: '🏫'
                     },
                     {
                         x: 1100, y: 952, w: 80, h: 40,
@@ -1851,8 +2324,8 @@
                     {
                         x: 1700, y: 952, w: 80, h: 40,
                         targetScene: 'main_building', targetX: 340, targetY: 660,
-                        classCode: '12I',
-                        label: 'Vào Lớp 12H, 12I, 12K (Từ Khuôn Viên Giữa)', icon: '📚'
+                        classCode: '12U',
+                        label: 'Vào Lớp 12H, 12I, 12K, 12T, 12U (Từ Khuôn Viên Giữa)', icon: '📚'
                     },
                     // WEST BUILDING OF RECTANGLE: Khối 11 (11A..11E)
                     {
@@ -1861,14 +2334,14 @@
                         classCode: '11B',
                         label: 'Vào Dãy Lớp 11A, 11B, 11C, 11D, 11E (Tòa Tây)', icon: '📘'
                     },
-                    // EAST BUILDING OF RECTANGLE: Khối 11 (11G..11K)
+                    // EAST BUILDING OF RECTANGLE: Khối 11 (11G..11K, 11T, 11U)
                     {
                         x: 1838, y: 685, w: 45, h: 80,
                         targetScene: 'main_building', targetX: 340, targetY: 660,
-                        classCode: '11I',
-                        label: 'Vào Dãy Lớp 11G, 11H, 11I, 11K (Tòa Đông)', icon: '📘'
+                        classCode: '11T',
+                        label: 'Vào Dãy Lớp 11G, 11H, 11I, 11K, 11T, 11U (Tòa Đông)', icon: '📘'
                     },
-                    // NORTH BUILDING OF RECTANGLE: Khối 10 (10A..10K)
+                    // NORTH BUILDING OF RECTANGLE: Khối 10 (10A..10U)
                     {
                         x: 1080, y: 416, w: 80, h: 40,
                         targetScene: 'main_building', targetX: 340, targetY: 660,
@@ -1878,8 +2351,8 @@
                     {
                         x: 1720, y: 416, w: 80, h: 40,
                         targetScene: 'main_building', targetX: 340, targetY: 660,
-                        classCode: '10I',
-                        label: 'Vào Dãy Lớp 10G, 10H, 10I, 10K (Tòa Bắc)', icon: '📗'
+                        classCode: '10T',
+                        label: 'Vào Dãy Lớp 10G, 10H, 10I, 10K, 10T, 10U (Tòa Bắc)', icon: '📗'
                     }
                 ],
                 interactables: [
@@ -1944,57 +2417,58 @@
                         hairStyle: 'short_neat',
                         hairColor: '#44403c',
                         facing: 'down',
-                        chat: `Chào cháu! Đi qua cổng trường là thấy ngay đài phun nước 3 tầng trắng và sảnh "TIÊN HỌC LỄ - HẬU HỌC VĂN". Nhớ bên trái là Nhà Đa Năng, bên phải là Nhà Hiệu Bộ nhé!`
+                        chat: `Chào cháu! Đi qua cổng trường là thấy ngay đài phun nước 3 tầng trắng và sảnh "TIÊN HỌC LỄ - HẬU HỌC VĂN". Hôm nay các thế hệ từ K52 đến K61 và các lớp A..K, T, U về trường đông vui lắm!`
                     },
                     {
-                        id: 'student_linh',
-                        name: 'Khánh Linh (Lớp 12A)',
-                        role: 'Bí thư Chi đoàn 12A',
-                        avatar: '👧',
+                        id: 'teacher_quyen',
+                        name: 'Cô Quyên',
+                        role: 'Giáo viên THPT Ninh Giang',
+                        avatar: '👩‍🏫',
                         x: 1250, y: 1380,
                         homeX: 1250, homeY: 1380,
-                        patrolRange: 55,
+                        patrolRange: 45,
                         gender: 'female',
                         outfit: 'ao_dai',
                         hairStyle: 'long_straight',
                         hairColor: '#1c1917',
                         facing: 'down',
-                        chat: `Cậu ơi! Góc đài phun nước trắng với chậu hoa giấy trước sảnh "TIÊN HỌC LỄ - HẬU HỌC VĂN" chính là góc kỷ niệm đẹp nhất của THPT Ninh Giang mình đấy! Đi xuyên qua sảnh là vào khuôn viên giữa 4 tòa nhà nhé.`
+                        chat: `Cô Quyên chào em nhé! Nhìn các em học sinh từ K52 đến K61, đặc biệt là đầy đủ các lớp từ A, B, C, D, E, G, H, I, K đến T, U tụ họp bên Đài phun nước 3 tầng mà cô xúc động quá. Chúc em luôn học tốt và giữ mãi kỷ niệm đẹp dưới mái trường THPT Ninh Giang!`
                     },
                     {
-                        id: 'student_nam',
-                        name: 'Hoàng Nam (Lớp 11B)',
-                        role: 'CLB Thể Thao Ninh Giang',
-                        avatar: '👦',
-                        x: 680, y: 940,
-                        homeX: 680, homeY: 940,
-                        patrolRange: 55,
+                        id: 'teacher_nam',
+                        name: 'Thầy Nam',
+                        role: 'Giáo viên THPT Ninh Giang',
+                        avatar: '👨‍🏫',
+                        x: 1315, y: 920,
+                        homeX: 1315, homeY: 920,
+                        patrolRange: 40,
                         gender: 'male',
-                        outfit: 'pe_uniform',
-                        hairStyle: 'korean_part',
-                        hairColor: '#5c341d',
-                        facing: 'right',
-                        chat: `Nhà Đa Năng nằm ngay bên cánh trái trường mình đây! Vào trong có sân cầu lông và sân bóng rổ rộng lắm, cậu đi vào cửa bên trái này nhé!`
+                        outfit: 'uniform_shirt',
+                        hairStyle: 'short_neat',
+                        hairColor: '#1c1917',
+                        accessories: { glasses: true },
+                        facing: 'down',
+                        chat: `Thầy Nam chào em! Đi xuyên qua sảnh "TIÊN HỌC LỄ - HẬU HỌC VĂN" này là vào khuôn viên giữa 4 tòa nhà chính. Dù em thuộc khóa K52 hay K61, học lớp A hay lớp T, lớp U thì tiếng trống trường THPT Ninh Giang vẫn luôn thân thương như ngày đầu!`
                     },
                     {
-                        id: 'student_thao',
-                        name: 'Phương Thảo (Lớp 10I)',
-                        role: 'Thành viên Lớp 10I',
-                        avatar: '👧',
+                        id: 'teacher_phuong',
+                        name: 'Cô Phương',
+                        role: 'Giáo viên THPT Ninh Giang',
+                        avatar: '👩‍🏫',
                         x: 1400, y: 660,
                         homeX: 1400, homeY: 660,
-                        patrolRange: 90,
+                        patrolRange: 65,
                         gender: 'female',
-                        outfit: 'uniform_shirt',
-                        hairStyle: 'ponytail',
+                        outfit: 'ao_dai',
+                        hairStyle: 'wavy_soft',
                         hairColor: '#5c341d',
                         facing: 'down',
-                        chat: `Khuôn viên ở chính giữa 4 tòa nhà mát rượi luôn cậu nhỉ! Trường mình có các lớp A, B, C, D, E, G, H, I, K chia đều quanh 4 dãy nhà hình chữ nhật này đấy.`
+                        chat: `Cô Phương chào em! Khuôn viên ở chính giữa 4 tòa nhà học hình chữ nhật lúc nào cũng rợp bóng cây. Em nhớ mở khung Chat chọn tab "Cùng lớp" hoặc "Cùng khóa" để trò chuyện với bạn bè từ K52 đến K61 nhé!`
                     },
                     {
-                        id: 'teacher_ha',
-                        name: 'Cô Thu Hà',
-                        role: 'Giáo viên Chủ nhiệm',
+                        id: 'teacher_nhan',
+                        name: 'Cô Nhàn',
+                        role: 'Giáo viên THPT Ninh Giang',
                         avatar: '👩‍🏫',
                         x: 2130, y: 940,
                         homeX: 2130, homeY: 940,
@@ -2004,12 +2478,43 @@
                         hairStyle: 'bob_cut',
                         hairColor: '#1c1917',
                         facing: 'left',
-                        chat: `Chào em! Phía bên phải sân trường này là Nhà Hiệu Bộ, nơi làm việc của Ban Giám Hiệu và Hội đồng Sư phạm. Em có thể bước vào cửa bên phải để tham quan nhé!`
+                        chat: `Cô Nhàn chào em! Phía bên phải sân trường này là Nhà Hiệu Bộ, còn dãy bên cạnh có đầy đủ các lớp K, T, U. Em cứ tự nhiên đi vào tham quan và giao lưu cùng các bạn nhé!`
+                    },
+                    {
+                        id: 'teacher_diep_campus',
+                        name: 'Cô Diệp',
+                        role: 'Giáo viên THPT Ninh Giang',
+                        avatar: '👩‍🏫',
+                        x: 1015, y: 685,
+                        homeX: 1015, homeY: 685,
+                        patrolRange: 45,
+                        gender: 'female',
+                        outfit: 'ao_dai',
+                        hairStyle: 'long_straight',
+                        hairColor: '#5c341d',
+                        facing: 'right',
+                        chat: `Cô Diệp chào em! Hôm nay các khóa từ K52 đến K61 và đủ các lớp A, B, C, D, E, G, H, I, K, T, U hội ngộ đông đủ quá. Nhớ bật Mic ở góc trái trên để trò chuyện trực tiếp với các bạn cùng lớp và cùng khóa nhé!`
+                    },
+                    {
+                        id: 'teacher_toan_campus',
+                        name: 'Thầy Toàn',
+                        role: 'Giáo viên THPT Ninh Giang',
+                        avatar: '👨‍🏫',
+                        x: 680, y: 940,
+                        homeX: 680, homeY: 940,
+                        patrolRange: 50,
+                        gender: 'male',
+                        outfit: 'uniform_shirt',
+                        hairStyle: 'short_neat',
+                        hairColor: '#1c1917',
+                        accessories: { glasses: true },
+                        facing: 'right',
+                        chat: `Thầy Toàn chào em! Bên trái sân trường mình là Nhà Đa Năng (nơi Thầy Phúc đang dạy thể chất), còn bên trong tòa học đường cũng có phòng truyền thống K52 - K61. Chúc em có những phút giây thật vui bên bạn bè!`
                     }
                 ]
             },
 
-            // --- INTERIOR 1: PHÒNG HỌC CÁC LỚP (12A..12K, 11A..11K, 10A..10K) ---
+            // --- INTERIOR 1: PHÒNG HỌC CÁC LỚP (12A..12U, 11A..11U, 10A..10U) ---
             main_building: {
                 name: 'Bên Trong Khu Nhà Học Chính',
                 width: 1200,
@@ -2065,34 +2570,35 @@
                 ],
                 npcs: [
                     {
-                        id: 'teacher_math',
-                        name: 'Thầy Minh Tuấn',
+                        id: 'teacher_diep',
+                        name: 'Cô Diệp',
                         role: 'Giáo viên THPT Ninh Giang',
-                        avatar: '👨‍🏫',
+                        avatar: '👩‍🏫',
                         x: 215, y: 195,
                         homeX: 215, homeY: 195,
                         patrolRange: 30,
+                        gender: 'female',
+                        outfit: 'ao_dai',
+                        hairStyle: 'long_straight',
+                        hairColor: '#1c1917',
+                        facing: 'down',
+                        chat: `Cô Diệp chào mừng em đến với phòng học Lớp ${activeClassroomName}! Trường THPT Ninh Giang tự hào với các thế hệ học sinh từ K52 đến K61 và các lớp A, B, C, D, E, G, H, I, K, T, U. Em hãy tiến lên bảng xanh bấm phím E để giải đố cùng cô nhé!`
+                    },
+                    {
+                        id: 'teacher_toan',
+                        name: 'Thầy Toàn',
+                        role: 'Giáo viên THPT Ninh Giang',
+                        avatar: '👨‍🏫',
+                        x: 860, y: 340,
+                        homeX: 860, homeY: 340,
+                        patrolRange: 55,
                         gender: 'male',
                         outfit: 'uniform_shirt',
                         hairStyle: 'short_neat',
                         hairColor: '#1c1917',
+                        accessories: { glasses: true },
                         facing: 'down',
-                        chat: `Chào mừng em đến với phòng học Lớp ${activeClassroomName}! Trường THPT Ninh Giang chúng ta có các lớp từ A, B, C, D, E, G, H, I đến K. Em hãy tiến lên bảng xanh để thử sức giải đố nhé!`
-                    },
-                    {
-                        id: 'student_library',
-                        name: 'Ngọc Ánh (Lớp 12C)',
-                        role: 'Ban Cán Sự Lớp',
-                        avatar: '👧',
-                        x: 860, y: 360,
-                        homeX: 860, homeY: 360,
-                        patrolRange: 65,
-                        gender: 'female',
-                        outfit: 'uniform_shirt',
-                        hairStyle: 'bob_cut',
-                        hairColor: '#5c341d',
-                        facing: 'up',
-                        chat: `Ở hành lang này bạn có thể chuyển nhanh sang bất kỳ lớp nào từ 10A-10K, 11A-11K cho tới 12A-12K đó!`
+                        chat: `Thầy Toàn chào em! Tại Sảnh Truyền Thống này lưu giữ biết bao kỷ niệm của các khóa K52, K53, K54, K55, K56, K57, K58, K59, K60, K61. Em có thể bấm vào bảng chọn lớp phía sau thầy để chuyển sang bất kỳ lớp nào từ A..K cho tới T, U nhé!`
                     }
                 ]
             },
@@ -2135,9 +2641,9 @@
                 ],
                 npcs: [
                     {
-                        id: 'coach_pe',
-                        name: 'Thầy Đức Thể Dục',
-                        role: 'Tổ Giáo Dục Thể Chất',
+                        id: 'coach_phuc',
+                        name: 'Thầy Phúc',
+                        role: 'Giáo viên Thể chất - THPT Ninh Giang',
                         avatar: '🏃‍♂️',
                         x: 590, y: 210,
                         homeX: 590, homeY: 210,
@@ -2147,12 +2653,12 @@
                         hairStyle: 'short_neat',
                         hairColor: '#1c1917',
                         facing: 'down',
-                        chat: `Chào mừng em vào Nhà Đa Năng nằm ở bên trái trường THPT Ninh Giang! Em cứ đứng vào sân bóng rổ hoặc sân cầu lông rồi bấm phím E (hoặc nút Tương tác) để trổ tài nhé!`
+                        chat: `Thầy Phúc chào em! Vào Nhà Đa Năng bên cánh trái trường mình là phải hết mình vì thể thao nhé! Em cứ tiến vào sân bóng rổ hoặc sân cầu lông rồi bấm phím E (hoặc nút Tương tác) để ném rổ 3 điểm và đập cầu giao hữu!`
                     },
                     {
                         id: 'badminton_opponent',
-                        name: 'Tuấn Kiệt (Lớp 12E)',
-                        role: 'Tuyển Cầu Lông 12E',
+                        name: 'Tuấn Kiệt (K60 - 12U)',
+                        role: 'Tuyển Cầu Lông 12U',
                         avatar: '👦',
                         x: 840, y: 245,
                         homeX: 840, homeY: 245,
@@ -2162,7 +2668,7 @@
                         hairStyle: 'wavy_soft',
                         hairColor: '#785233',
                         facing: 'down',
-                        chat: `Đỡ cầu này bạn ơi! Nhà Đa Năng bên trái sân trường mình lúc nào cũng sôi động!`
+                        chat: `Đỡ cầu này bạn ơi! Tiết thể dục của Thầy Phúc ở Nhà Đa Năng lúc nào cũng vui nhất trường!`
                     }
                 ]
             },
@@ -2276,6 +2782,9 @@
             }
             if (code === 'KeyC') {
                 window.openCustomizer();
+            }
+            if (code === 'KeyV') {
+                window.toggleVoiceMic();
             }
         });
 
@@ -2408,11 +2917,19 @@
         });
 
         // --- CHARACTER CUSTOMIZER UI BUILDER ---
+        window.selectCohort = function(cCode) {
+            player.cohort = cCode;
+            playSound('click');
+            initCustomizerUI();
+            window.setChatFilter(chatFilter);
+        };
+
         window.selectGrade = function(g) {
             player.grade = g;
             activeClassroomName = player.className;
             playSound('click');
             initCustomizerUI();
+            window.setChatFilter(chatFilter);
         };
 
         window.selectClassLetter = function(letter) {
@@ -2420,9 +2937,25 @@
             activeClassroomName = player.className;
             playSound('click');
             initCustomizerUI();
+            window.setChatFilter(chatFilter);
         };
 
         function initCustomizerUI() {
+            // Cohort Buttons (K52 - K61)
+            const cohortContainer = document.getElementById('cohortContainer');
+            if (cohortContainer) {
+                cohortContainer.innerHTML = '';
+                VALID_COHORTS.forEach(cCode => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    const isSel = player.cohort === cCode;
+                    btn.className = `option-pill ${isSel ? 'selected' : 'bg-white text-slate-700'} py-1 rounded-lg border border-slate-300 font-black text-[11px]`;
+                    btn.textContent = cCode;
+                    btn.onclick = () => window.selectCohort(cCode);
+                    cohortContainer.appendChild(btn);
+                });
+            }
+
             VALID_GRADES.forEach(g => {
                 const btn = document.getElementById(`grade${g}Btn`);
                 if (btn) btn.classList.toggle('selected', player.grade === g);
@@ -2442,17 +2975,19 @@
                 });
             }
 
-            const fullClass = `Lớp ${player.className}`;
+            const fullClassBadge = `${player.cohort} • Lớp ${player.className}`;
             const selLabel = document.getElementById('selectedClassLabel');
-            if (selLabel) selLabel.textContent = `Đang chọn: ${fullClass}`;
+            if (selLabel) selLabel.textContent = fullClassBadge;
             const cardBadge = document.getElementById('cardClassBadge');
-            if (cardBadge) cardBadge.textContent = fullClass;
+            if (cardBadge) cardBadge.textContent = fullClassBadge;
+            const cardCohort = document.getElementById('cardCohortPreview');
+            if (cardCohort) cardCohort.textContent = `Khóa ${player.cohort}`;
             const hudBadge = document.getElementById('hudClassBadge');
-            if (hudBadge) hudBadge.textContent = fullClass;
+            if (hudBadge) hudBadge.textContent = fullClassBadge;
             const ftClassTitle = document.getElementById('fastTravelMyClassTitle');
-            if (ftClassTitle) ftClassTitle.textContent = `6. Vào Phòng Học ${fullClass} Của Bạn`;
+            if (ftClassTitle) ftClassTitle.textContent = `6. Vào Phòng Học Lớp ${player.className} (${player.cohort}) Của Bạn`;
 
-            // Populate All 27 Classes Grid inside Fast Travel Modal
+            // Populate All 33 Classes Grid inside Fast Travel Modal (10, 11, 12 x A..K, T, U)
             const allClassesGrid = document.getElementById('allClassesQuickGrid');
             if (allClassesGrid) {
                 allClassesGrid.innerHTML = '';
@@ -2469,7 +3004,7 @@
                         const btn = document.createElement('button');
                         btn.type = 'button';
                         const isMyClass = code === player.className;
-                        btn.className = `px-2.5 py-1 rounded-lg text-[11px] font-extrabold cursor-pointer transition ${isMyClass ? 'bg-amber-500 text-slate-950 shadow' : 'bg-white/10 hover:bg-white/25 text-white'}`;
+                        btn.className = `px-2 py-1 rounded-lg text-[11px] font-extrabold cursor-pointer transition ${isMyClass ? 'bg-amber-500 text-slate-950 shadow' : 'bg-white/10 hover:bg-white/25 text-white'}`;
                         btn.textContent = code;
                         btn.onclick = () => window.enterSpecificClassroom(code);
                         row.appendChild(btn);
@@ -2598,6 +3133,7 @@
         window.randomizeCharacter = function() {
             player.gender = Math.random() > 0.5 ? 'male' : 'female';
             window.suggestRandomName();
+            player.cohort = VALID_COHORTS[Math.floor(Math.random() * VALID_COHORTS.length)];
             player.grade = VALID_GRADES[Math.floor(Math.random() * VALID_GRADES.length)];
             player.classLetter = VALID_CLASS_LETTERS[Math.floor(Math.random() * VALID_CLASS_LETTERS.length)];
             activeClassroomName = player.className;
@@ -2627,6 +3163,7 @@
             window.updateCharacterFromUI();
             activeClassroomName = player.className;
             initCustomizerUI();
+            window.setChatFilter(chatFilter);
             playSound('score');
 
             const modal = document.getElementById('customizerModal');
@@ -2636,9 +3173,9 @@
                 modal.style.display = 'none';
             }
 
-            player.emoteBubble = `🏫 Tự hào Lớp ${player.className} - THPT Ninh Giang!`;
+            player.emoteBubble = `🏫 Tự hào ${player.cohort} - Lớp ${player.className} THPT Ninh Giang!`;
             player.emoteBubbleTimer = 3.2;
-            showBanner(`Chào mừng ${player.name} (Lớp ${player.className}) bước vào THPT Ninh Giang!`, '🏫');
+            showBanner(`Chào mừng ${player.name} (${player.cohort} • Lớp ${player.className}) bước vào THPT Ninh Giang!`, '🏫');
             broadcastMyPlayerState(true);
             if (canvas) canvas.focus();
         };
@@ -2756,16 +3293,16 @@
             c.setLineDash([]);
 
             // 5. DRAW THE 4 RECTANGULAR ACADEMIC BUILDINGS ENCLOSING THE CENTRAL COURTYARD
-            // 5A. North Building (Tòa Hậu Đường - Khối 10: 10A..10K)
+            // 5A. North Building (Tòa Hậu Đường - Khối 10: 10A..10U)
             drawNorthAcademicBuilding(c, 760, 180, 1280, 225);
 
             // 5B. West Building of Rectangle (Tòa Tây Học Đường - Khối 11: 11A..11E)
             drawVerticalWingBuilding(c, 760, 465, 185, 440, 'DÃY LỚP 11A - 11E', ['11A', '11B', '11C', '11D', '11E'], true);
 
-            // 5C. East Building of Rectangle (Tòa Đông Học Đường - Khối 11: 11G..11K)
-            drawVerticalWingBuilding(c, 1855, 465, 185, 440, 'DÃY LỚP 11G - 11K', ['11G', '11H', '11I', '11K'], false);
+            // 5C. East Building of Rectangle (Tòa Đông Học Đường - Khối 11: 11G..11K, 11T, 11U)
+            drawVerticalWingBuilding(c, 1855, 465, 185, 440, 'DÃY LỚP 11G - 11U', ['11G', '11H', '11I', '11K', '11T', '11U'], false);
 
-            // 5D. South 3-Story Yellow Building (Tòa Tiền Đường 3 Tầng - Khối 12: 12A..12K, exact match to 2nd photo!)
+            // 5D. South 3-Story Yellow Building (Tòa Tiền Đường 3 Tầng - Khối 12: 12A..12U, exact match to 2nd photo!)
             drawSouthThreeStoryYellowBuilding(c, 760, 920, 1280, 250, timeSec);
 
             // 6. FRONT 3-TIERED WHITE FOUNTAIN, BOUGAINVILLEA POTS, FLAGPOLE & PHOENIX TREES (From 2nd Photo!)
@@ -2813,23 +3350,23 @@
                 c.fillText(`LỚP ${cls}`, bx + 32, y + 159);
             });
 
-            const rightClasses = ['10G', '10H', '10I', '10K'];
+            const rightClasses = ['10G', '10H', '10I', '10K', '10T', '10U'];
             rightClasses.forEach((cls, i) => {
-                const bx = x + w - wingW + 40 + i * 126;
+                const bx = x + w - wingW + 18 + i * 88;
                 c.fillStyle = '#14532d';
-                c.fillRect(bx, y + 72, 68, 54);
+                c.fillRect(bx, y + 72, 56, 54);
                 c.fillStyle = '#1e3a8a';
-                c.fillRect(bx + 12, y + 145, 44, 20);
+                c.fillRect(bx + 6, y + 145, 44, 20);
                 c.fillStyle = '#ffffff';
-                c.font = 'bold 10px "Be Vietnam Pro", sans-serif';
+                c.font = 'bold 9.5px "Be Vietnam Pro", sans-serif';
                 c.textAlign = 'center';
-                c.fillText(`LỚP ${cls}`, bx + 34, y + 159);
+                c.fillText(`LỚP ${cls}`, bx + 28, y + 159);
             });
 
             c.fillStyle = '#fef08a';
             c.font = '800 13px "Be Vietnam Pro", sans-serif';
             c.textAlign = 'center';
-            c.fillText('TÒA HẬU ĐƯỜNG • DÃY PHÒNG HỌC KHỐI 10 (10A, 10B, 10C, 10D, 10E, 10G, 10H, 10I, 10K)', x + w / 2, y + 29);
+            c.fillText('TÒA HẬU ĐƯỜNG • DÃY PHÒNG HỌC KHỐI 10 (10A, 10B, 10C, 10D, 10E, 10G, 10H, 10I, 10K, 10T, 10U)', x + w / 2, y + 29);
 
             c.restore();
         }
@@ -2988,7 +3525,7 @@
                 c.fillRect(colX, y + 40, 16, h - 40);
             }
 
-            // Class Signs on Ground Floor (12A..12E on Left; 12G..12K on Right)
+            // Class Signs on Ground Floor (12A..12E on Left; 12G..12K, 12T, 12U on Right)
             const g12Left = ['12A', '12B', '12C', '12D', '12E'];
             g12Left.forEach((cls, idx) => {
                 const sx = x + 55 + idx * 105;
@@ -2999,9 +3536,9 @@
                 c.textAlign = 'center';
                 c.fillText(`LỚP ${cls}`, sx + 23, y + h - 10);
             });
-            const g12Right = ['12G', '12H', '12I', '12K'];
+            const g12Right = ['12G', '12H', '12I', '12K', '12T', '12U'];
             g12Right.forEach((cls, idx) => {
-                const sx = centerX + 115 + idx * 125;
+                const sx = centerX + 95 + idx * 86;
                 c.fillStyle = '#1e3a8a';
                 c.fillRect(sx, y + h - 22, 46, 17);
                 c.fillStyle = '#ffffff';
@@ -3530,7 +4067,7 @@
             c.fillStyle = '#b45309';
             c.fillRect(585, 70, 30, 380);
 
-            // LEFT ROOM: PHÒNG HỌC CỦA LỚP ĐANG CHỌN (12A..12K, 11A..11K, 10A..10K)
+            // LEFT ROOM: PHÒNG HỌC CỦA LỚP ĐANG CHỌN (12A..12U, 11A..11U, 10A..10U)
             c.fillStyle = '#064e3b';
             c.strokeStyle = '#92400e';
             c.lineWidth = 5;
@@ -3540,10 +4077,10 @@
             c.fillStyle = '#ffffff';
             c.font = 'bold 13px "Be Vietnam Pro", sans-serif';
             c.textAlign = 'center';
-            c.fillText(`PHÒNG HỌC LỚP ${activeClassroomName} - THPT NINH GIANG`, 345, 41);
+            c.fillText(`PHÒNG HỌC LỚP ${activeClassroomName} (${player.cohort}) - THPT NINH GIANG`, 345, 41);
             c.font = '10px "Be Vietnam Pro", sans-serif';
             c.fillStyle = '#a7f3d0';
-            c.fillText('Tiên Học Lễ - Hậu Học Văn • Khối Lớp A, B, C, D, E, G, H, I, K', 345, 58);
+            c.fillText('Tiên Học Lễ - Hậu Học Văn • Hệ Lớp A, B, C, D, E, G, H, I, K, T, U', 345, 58);
 
             // Teacher Desk
             c.fillStyle = '#92400e';
@@ -3565,14 +4102,14 @@
                 }
             }
 
-            // RIGHT ROOM: SẢNH CHUYỂN LỚP & THƯ VIỆN
+            // RIGHT ROOM: SẢNH CHUYỂN LỚP & THƯ VIỆN K52 - K61
             c.fillStyle = '#78350f';
             c.fillRect(670, 110, 420, 55);
             c.fillStyle = '#fef08a';
-            c.font = '800 13px "Be Vietnam Pro", sans-serif';
+            c.font = '800 12.5px "Be Vietnam Pro", sans-serif';
             c.textAlign = 'center';
-            c.fillText('🏫 BẢNG CHỌN CÁC LỚP (A, B, C, D, E, G, H, I, K) 🏫', 880, 134);
-            c.font = '11px "Be Vietnam Pro", sans-serif';
+            c.fillText('🏫 SẢNH TRUYỀN THỐNG K52-K61 & CHỌN LỚP (A..K, T, U) 🏫', 880, 134);
+            c.font = '10.5px "Be Vietnam Pro", sans-serif';
             c.fillStyle = '#ffffff';
             c.fillText('Bấm phím E tại đây để chuyển sang bất kỳ lớp nào của Khối 10, 11, 12', 880, 154);
 
@@ -3985,6 +4522,7 @@
             }
 
             // 7. Update & Interpolate Online Remote Players + Simulated Classmates (Max 100)
+            updateLocalVoiceMeter();
             const nowMs = Date.now();
             for (const [id, rp] of remotePlayers.entries()) {
                 if (nowMs - rp.lastSeen > PLAYER_TIMEOUT_MS) {
@@ -4004,6 +4542,10 @@
                 }
                 rp.animTimer = (rp.animTimer || 0) + dt;
                 if (rp.waveTimer > 0) rp.waveTimer -= dt;
+                if (rp.speakingTimer > 0) {
+                    rp.speakingTimer -= dt;
+                    if (rp.speakingTimer <= 0) rp.isSpeaking = false;
+                }
                 if (rp.emoteBubbleTimer > 0) {
                     rp.emoteBubbleTimer -= dt;
                     if (rp.emoteBubbleTimer <= 0) rp.emoteBubble = null;
@@ -4210,7 +4752,25 @@
                 npc.chat,
                 [
                     {
-                        text: '👋 Chào và cảm ơn!',
+                        text: `🎓 Em chào ${npc.name} (Em học ${player.cohort} - Lớp ${player.className})!`,
+                        onClick: () => {
+                            playSound('score');
+                            player.emoteBubble = `❤️ Em chào ${npc.name} ạ!`;
+                            player.emoteBubbleTimer = 3.0;
+                            npc.emoteBubble = `🌟 Chúc ${player.name} (${player.cohort}-${player.className}) luôn thành công nhé!`;
+                            npc.emoteBubbleTimer = 4.0;
+                            closeDialogue();
+                        }
+                    },
+                    {
+                        text: '📸 Chụp ảnh kỷ niệm cùng Thầy/Cô',
+                        onClick: () => {
+                            closeDialogue();
+                            window.takeSchoolPhoto();
+                        }
+                    },
+                    {
+                        text: '👋 Tạm biệt ạ!',
                         onClick: () => {
                             closeDialogue();
                             window.triggerEmote();
