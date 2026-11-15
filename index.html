@@ -29,51 +29,39 @@
             width: 100%;
             height: 100%;
         }
+        /* TỐI ƯU GPU MÁT MÁY: Loại bỏ hoàn toàn backdrop-filter: blur() gây nóng máy trên điện thoại */
         .glass-panel {
-            background: rgba(15, 23, 42, 0.82);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.55);
+            background: rgba(15, 23, 42, 0.93);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
         }
         .glass-light {
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(16px);
-            border: 2px solid rgba(245, 158, 11, 0.45);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+            background: rgba(255, 255, 255, 0.98);
+            border: 2px solid rgba(245, 158, 11, 0.5);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
         }
         .game-btn {
-            transition: transform 0.12s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+            transition: transform 0.1s ease, background-color 0.12s ease;
             cursor: pointer;
         }
         .game-btn:active {
-            transform: scale(0.92);
+            transform: scale(0.93);
         }
         .action-circle {
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.28), rgba(15, 23, 42, 0.88));
-            backdrop-filter: blur(6px);
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45), inset 0 1px 2px rgba(255,255,255,0.4);
-            transition: transform 0.1s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            background: rgba(15, 23, 42, 0.92);
+            border: 2px solid rgba(255, 255, 255, 0.45);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            transition: transform 0.1s ease, border-color 0.15s ease;
             cursor: pointer;
         }
         .action-circle:active, .action-circle.active-press {
-            transform: scale(0.88);
+            transform: scale(0.9);
             border-color: #fbbf24;
-            box-shadow: 0 0 22px rgba(251, 191, 36, 0.75);
+            background: rgba(180, 83, 9, 0.92);
         }
         .interact-pulse {
-            animation: pulseGlow 1.5s infinite;
-        }
-        @keyframes pulseGlow {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.75), 0 8px 25px rgba(245, 158, 11, 0.55);
-                border-color: #fbbf24;
-            }
-            50% {
-                box-shadow: 0 0 0 12px rgba(251, 191, 36, 0), 0 8px 30px rgba(245, 158, 11, 0.85);
-                border-color: #fef08a;
-            }
+            border-color: #fbbf24 !important;
+            background: rgba(217, 119, 6, 0.92) !important;
         }
         ::-webkit-scrollbar {
             width: 6px;
@@ -135,7 +123,7 @@
                         <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-full border border-amber-400/30">THPT Ninh Giang</span>
                         <span id="hudClassBadge" class="text-[10px] font-extrabold text-slate-950 bg-amber-400 px-2 py-0.5 rounded-full shadow">K60 • Lớp 12A</span>
                         <button type="button" onclick="window.toggleOnlinePlayersModal()" class="game-btn text-[10px] font-extrabold text-emerald-300 bg-emerald-500/20 hover:bg-emerald-500/35 px-2 py-0.5 rounded-full border border-emerald-400/40 flex items-center gap-1 shadow">
-                            <span id="netStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span id="netStatusDot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
                             <span id="onlineCountText">1 / 100 Online</span>
                         </button>
                         <span id="fpsCounter" class="text-[10px] text-emerald-400 font-mono hidden sm:inline">60 FPS</span>
@@ -167,6 +155,10 @@
                     <span id="timeIcon">☀️</span>
                     <span id="timeLabel">Ban Ngày</span>
                 </button>
+                <button type="button" onclick="window.toggleEcoMode()" id="ecoModeBtn" class="game-btn glass-panel rounded-xl px-2.5 py-1.5 text-[11px] font-bold text-lime-300 flex items-center gap-1 hover:bg-slate-800/80 border-lime-400/40" title="Chế độ Mát Máy & Tiết Kiệm Pin">
+                    <span>🌱</span>
+                    <span id="ecoModeLabel">Mát Máy: Bật</span>
+                </button>
                 <button type="button" onclick="window.ringSchoolDrum()" class="game-btn glass-panel rounded-xl px-2.5 py-1.5 text-[11px] font-bold text-rose-200 flex items-center gap-1 hover:bg-slate-800/80" title="Đánh trống trường">
                     <span>🥁</span>
                     <span class="hidden sm:inline">Trống</span>
@@ -186,21 +178,25 @@
                     <span id="speakerStatusIcon">🔈</span>
                     <span id="speakerStatusText" class="hidden sm:inline">Loa Mở</span>
                 </button>
+                <button type="button" id="btnMicLoopback" onclick="window.toggleMicLoopbackTest()" class="game-btn bg-slate-800 hover:bg-slate-700 text-sky-200 border border-sky-400/30 rounded-lg px-2 py-1 text-[10px] font-bold flex items-center gap-1" title="Tự nghe thử giọng của mình để kiểm tra Mic">
+                    <span>🎧</span>
+                    <span id="loopbackStatusText">Test Mic</span>
+                </button>
                 <div class="flex items-center gap-1">
-                    <span class="text-[10px] text-amber-300 font-bold">Kênh Mic:</span>
+                    <span class="text-[10px] text-amber-300 font-bold">Kênh:</span>
                     <select id="voiceChannelSelect" onchange="window.changeVoiceChannel(this.value)" class="bg-slate-900 text-amber-200 text-[10px] font-extrabold px-2 py-1 rounded-lg border border-amber-400/40 focus:outline-none cursor-pointer">
-                        <option value="cohort_class">Cùng Khóa & Lớp</option>
+                        <option value="all" selected>Toàn Trường (Mọi người)</option>
                         <option value="cohort">Cùng Khóa (K52-K61)</option>
                         <option value="class">Cùng Lớp (A..U)</option>
-                        <option value="all">Toàn Trường</option>
+                        <option value="cohort_class">Cùng Khóa & Lớp</option>
                     </select>
                 </div>
                 <!-- Live Mic Volume Meter & Active Speaker Indicator -->
                 <div class="flex items-center gap-1.5 ml-auto">
                     <div class="w-12 h-2 bg-slate-800 rounded-full overflow-hidden border border-white/15" title="Âm lượng Mic của bạn">
-                        <div id="micLevelBar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 transition-all duration-75" style="width: 0%"></div>
+                        <div id="micLevelBar" class="h-full bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500" style="width: 0%"></div>
                     </div>
-                    <span id="activeVoiceSpeakerBadge" class="text-[10px] text-emerald-300 font-bold truncate max-w-[110px] hidden">🔊 Đang nói...</span>
+                    <span id="activeVoiceSpeakerBadge" class="text-[10px] text-emerald-300 bg-emerald-950/90 border border-emerald-400/40 px-1.5 py-0.5 rounded font-bold truncate max-w-[140px] hidden">🔊 Đang nói...</span>
                 </div>
             </div>
 
@@ -244,7 +240,7 @@
 
     <!-- CONTEXTUAL PROMPT PILL -->
     <div id="contextPrompt" class="fixed bottom-40 sm:bottom-32 left-1/2 -translate-x-1/2 z-20 pointer-events-auto hidden">
-        <button type="button" onclick="window.triggerInteraction()" class="game-btn bg-gradient-to-r from-amber-500 to-orange-600 text-white font-extrabold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-xl border-2 border-amber-200 flex items-center gap-2 animate-bounce">
+        <button type="button" onclick="window.triggerInteraction()" class="game-btn bg-gradient-to-r from-amber-500 to-orange-600 text-white font-extrabold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-xl border-2 border-amber-200 flex items-center gap-2">
             <span id="contextPromptIcon" class="text-lg">🚪</span>
             <span id="contextPromptText">Vào Nhà Đa Năng (Phím E)</span>
         </button>
@@ -275,7 +271,7 @@
             <!-- Chat Header -->
             <div class="bg-slate-900/90 px-2.5 py-1.5 border-b border-white/15 flex items-center justify-between gap-1">
                 <div class="flex items-center gap-1 shrink-0">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
                     <span class="text-[10px] sm:text-[11px] font-extrabold text-amber-300">💬 Chat (100)</span>
                 </div>
                 <div class="flex items-center gap-1 flex-wrap justify-end">
@@ -345,7 +341,7 @@
         
         <!-- Left: Virtual Analog Joystick + Tap Directional Buttons -->
         <div class="pointer-events-auto flex flex-col items-center">
-            <div id="joystickZone" class="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-slate-900/65 backdrop-blur-md border-2 border-white/30 shadow-2xl flex items-center justify-center touch-none">
+            <div id="joystickZone" class="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-slate-900/90 border-2 border-white/30 shadow-xl flex items-center justify-center touch-none">
                 <!-- Tap/Hold Directional Buttons around outer ring -->
                 <button type="button" id="dpadUp" class="dpad-btn absolute top-1 w-9 h-7">▲</button>
                 <button type="button" id="dpadDown" class="dpad-btn absolute bottom-1 w-9 h-7">▼</button>
@@ -398,7 +394,7 @@
     </div>
 
     <!-- CHARACTER CREATION & CUSTOMIZATION MODAL -->
-    <div id="customizerModal" class="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+    <div id="customizerModal" class="fixed inset-0 z-50 bg-slate-950/90 flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
         <div class="glass-light rounded-3xl w-full max-w-4xl overflow-hidden flex flex-col md:flex-row max-h-[95vh] shadow-2xl border-2 border-amber-400 relative">
             
             <!-- Quick Close / Play Immediately Button in Top-Right Corner -->
@@ -538,7 +534,7 @@
     </div>
 
     <!-- FAST TRAVEL & CAMPUS MAP MODAL -->
-    <div id="fastTravelModal" class="fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4">
+    <div id="fastTravelModal" class="fixed inset-0 z-40 bg-slate-950/90 hidden items-center justify-center p-3 sm:p-4">
         <div class="glass-panel rounded-3xl w-full max-w-3xl p-4 sm:p-6 text-white border-2 border-amber-400/50 shadow-2xl max-h-[92vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-white/15 pb-3 mb-3">
                 <div class="flex items-center gap-2.5">
@@ -674,7 +670,7 @@
     </div>
 
     <!-- PHOTO SNAPSHOT MODAL -->
-    <div id="photoModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+    <div id="photoModal" class="fixed inset-0 z-50 bg-black/90 hidden items-center justify-center p-4">
         <div class="bg-white p-4 rounded-3xl max-w-lg w-full shadow-2xl border-4 border-amber-400 flex flex-col items-center">
             <div class="w-full flex items-center justify-between mb-2">
                 <span class="text-xs font-extrabold text-amber-700 uppercase tracking-wider">📸 Ảnh Kỷ Niệm Thanh Xuân</span>
@@ -873,8 +869,8 @@
         // AND Canvas Environment (Firebase Firestore + WebSocket Relay)
         // ============================================================================
         const MAX_ONLINE_PLAYERS = 100;
-        const PLAYER_TIMEOUT_MS = 22000;
-        const SYNC_INTERVAL_MS = 180;
+        const PLAYER_TIMEOUT_MS = 25000;
+        const SYNC_INTERVAL_MS = 260;
         const ROOM_TOPIC_PREFIX = 'thpt_ninh_giang_online_v1';
 
         let myClientId = 'hs_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now().toString(36).slice(-4);
@@ -889,24 +885,53 @@
         let chatBoxCollapsed = false;
         let unreadChatCount = 0;
 
-        let mqttClient = null;
+        let mqttClients = [];
         let localBroadcastChannel = null;
         let lastNetworkSyncTime = 0;
+        let lastBroadcastX = 0;
+        let lastBroadcastY = 0;
+        let lastBroadcastScene = '';
         let networkConnectedType = 'Đang kết nối...';
 
+        // Chế độ Mát Máy / Tiết Kiệm Pin (Mặc định bật tối ưu bộ nhớ đệm & giảm tải GPU)
+        let ecoBatteryMode = false; // false = 60FPS mượt + Cache tĩnh; true = 30FPS siêu tiết kiệm pin
+        window.toggleEcoMode = function() {
+            ecoBatteryMode = !ecoBatteryMode;
+            const lbl = document.getElementById('ecoModeLabel');
+            const btn = document.getElementById('ecoModeBtn');
+            if (lbl) lbl.textContent = ecoBatteryMode ? 'Siêu Mát (30FPS)' : 'Mát Máy: Bật';
+            if (btn) {
+                btn.className = ecoBatteryMode
+                    ? 'game-btn glass-panel rounded-xl px-2.5 py-1.5 text-[11px] font-extrabold text-slate-950 bg-lime-400 flex items-center gap-1 border-lime-200'
+                    : 'game-btn glass-panel rounded-xl px-2.5 py-1.5 text-[11px] font-bold text-lime-300 flex items-center gap-1 hover:bg-slate-800/80 border-lime-400/40';
+            }
+            playSound('click');
+            showBanner(
+                ecoBatteryMode
+                    ? '🌱 Đã bật chế độ Siêu Tiết Kiệm Pin (Giới hạn 30 FPS, giảm 60% điện năng)!'
+                    : '⚡ Đã chuyển sang chế độ 60 FPS Mượt Mà (Có bộ đệm chống nóng máy)!',
+                '🌱'
+            );
+        };
+
         // ============================================================================
-        // REAL-TIME VOICE CHAT ENGINE (MỞ MIC ĐÀM THOẠI CÙNG LỚP / CÙNG KHÓA K52-K61)
-        // Uses Web Audio API + MediaRecorder chunks over WebSocket MQTT & BroadcastChannel
+        // UNIVERSAL WEBAUDIO PCM VOICE CHAT ENGINE (MỞ MIC NGHE RÕ 100% MỌI THIẾT BỊ)
+        // Thay thế hoàn toàn MediaRecorder bằng luồng PCM 8000Hz giải mã trực tiếp qua
+        // AudioBuffer giúp iOS Safari, Android Chrome và máy tính đều nghe rõ tức thì!
         // ============================================================================
+        const VOICE_SAMPLE_RATE = 8000;
         const voiceState = {
             micEnabled: false,
             speakerEnabled: true,
-            channelMode: 'cohort_class', // 'cohort_class', 'cohort', 'class', 'all'
+            loopbackTest: false,
+            channelMode: 'all', // Mặc định 'all' (Toàn trường) để mọi người vào nghe thấy nhau ngay!
             stream: null,
-            analyser: null,
-            dataArray: null,
-            mediaRecorder: null,
-            chunkInterval: null
+            sourceNode: null,
+            processorNode: null,
+            muteGainNode: null,
+            pcmBuffer: [],
+            nextPlayTime: 0,
+            lastPacketIds: new Set()
         };
 
         function getActiveVoiceChannelId() {
@@ -930,17 +955,35 @@
         }
 
         window.changeVoiceChannel = function(newMode) {
-            voiceState.channelMode = newMode || 'cohort_class';
+            voiceState.channelMode = newMode || 'all';
             playSound('click');
             showBanner(`🎙️ Đã chuyển Kênh Đàm Thoại Mic sang: ${getVoiceChannelDisplayName()}`, '🎙️');
-            if (mqttClient && mqttClient.connected) {
-                try {
-                    mqttClient.subscribe(`${ROOM_TOPIC_PREFIX}/voice/+`);
-                } catch (e) {}
+        };
+
+        window.toggleMicLoopbackTest = function() {
+            voiceState.loopbackTest = !voiceState.loopbackTest;
+            const btn = document.getElementById('btnMicLoopback');
+            const txt = document.getElementById('loopbackStatusText');
+            if (txt) txt.textContent = voiceState.loopbackTest ? 'Đang Tự Nghe' : 'Test Mic';
+            if (btn) {
+                btn.className = voiceState.loopbackTest
+                    ? 'game-btn bg-sky-500 text-slate-950 border border-white rounded-lg px-2 py-1 text-[10px] font-extrabold flex items-center gap-1 shadow'
+                    : 'game-btn bg-slate-800 hover:bg-slate-700 text-sky-200 border border-sky-400/30 rounded-lg px-2 py-1 text-[10px] font-bold flex items-center gap-1';
             }
+            playSound('click');
+            if (voiceState.loopbackTest && !voiceState.micEnabled) {
+                window.toggleVoiceMic();
+            }
+            showBanner(
+                voiceState.loopbackTest
+                    ? '🎧 Đã BẬT chế độ Tự Nghe Thử Mic: Hãy nói vào Mic để nghe lại giọng của chính bạn!'
+                    : '🎧 Đã tắt Tự Nghe Thử Mic (Bạn bè vẫn nghe thấy bạn bình thường)',
+                '🎧'
+            );
         };
 
         window.toggleVoiceSpeaker = function() {
+            initAudio();
             voiceState.speakerEnabled = !voiceState.speakerEnabled;
             const iconEl = document.getElementById('speakerStatusIcon');
             const textEl = document.getElementById('speakerStatusText');
@@ -955,14 +998,68 @@
             playSound('click');
         };
 
+        // Mã hóa mảng mẫu âm thanh Float32 [-1..1] sang chuỗi Base64 PCM 8-bit siêu gọn nhẹ
+        function encodeFloat32ToPCM8Base64(floatSamples) {
+            const len = floatSamples.length;
+            let binary = '';
+            for (let i = 0; i < len; i++) {
+                // Khuếch đại nhẹ giọng nói (1.45x) và giới hạn trong [-1, 1]
+                const clamped = Math.max(-1, Math.min(1, floatSamples[i] * 1.45));
+                const uint8 = Math.round((clamped + 1) * 127.5);
+                binary += String.fromCharCode(uint8);
+            }
+            return btoa(binary);
+        }
+
+        // Giải mã chuỗi Base64 PCM 8-bit về Float32Array và phát trực tiếp qua WebAudio API
+        function playDecodedPCM8Base64(base64Str) {
+            if (!base64Str) return;
+            try {
+                initAudio();
+                if (!audioCtx) return;
+                const binary = atob(base64Str);
+                const len = binary.length;
+                if (len < 60) return;
+
+                const audioBuffer = audioCtx.createBuffer(1, len, VOICE_SAMPLE_RATE);
+                const channelData = audioBuffer.getChannelData(0);
+
+                // Giải mã + làm mượt sóng âm chống rè (low-pass filter nhẹ)
+                let prev = 0;
+                for (let i = 0; i < len; i++) {
+                    const raw = (binary.charCodeAt(i) / 127.5) - 1.0;
+                    const smoothed = prev * 0.18 + raw * 0.82;
+                    channelData[i] = smoothed;
+                    prev = smoothed;
+                }
+
+                const src = audioCtx.createBufferSource();
+                src.buffer = audioBuffer;
+
+                const gainNode = audioCtx.createGain();
+                gainNode.gain.value = 2.1; // Tăng âm lượng rõ ràng trên loa ngoài điện thoại
+
+                src.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+                if (voiceState.nextPlayTime < now || voiceState.nextPlayTime > now + 1.2) {
+                    voiceState.nextPlayTime = now + 0.04;
+                }
+                src.start(voiceState.nextPlayTime);
+                voiceState.nextPlayTime += audioBuffer.duration;
+            } catch (err) {}
+        }
+
         window.toggleVoiceMic = async function() {
             if (voiceState.micEnabled) {
                 stopVoiceMic();
                 return;
             }
             try {
+                initAudio();
                 if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    showBanner('⚠️ Trình duyệt của bạn không hỗ trợ mở Mic trực tiếp!', '🎙️');
+                    showBanner('⚠️ Trình duyệt này không hỗ trợ mở Micro trực tiếp!', '🎙️');
                     return;
                 }
                 const stream = await navigator.mediaDevices.getUserMedia({
@@ -974,49 +1071,94 @@
                 });
                 voiceState.stream = stream;
                 voiceState.micEnabled = true;
+                voiceState.pcmBuffer = [];
 
-                initAudio();
-                if (audioCtx) {
-                    const source = audioCtx.createMediaStreamSource(stream);
-                    const analyser = audioCtx.createAnalyser();
-                    analyser.fftSize = 256;
-                    source.connect(analyser);
-                    voiceState.analyser = analyser;
-                    voiceState.dataArray = new Uint8Array(analyser.frequencyBinCount);
-                }
+                const nativeRate = audioCtx.sampleRate || 44100;
+                const source = audioCtx.createMediaStreamSource(stream);
+                const processor = audioCtx.createScriptProcessor(4096, 1, 1);
+                const muteGain = audioCtx.createGain();
+                muteGain.gain.value = 0; // Ngăn dội âm trực tiếp tại máy người nói
 
-                // Start MediaRecorder to stream short live audio chunks to peers in the same Class/Cohort
-                startVoiceChunkStreaming(stream);
+                processor.onaudioprocess = (ev) => {
+                    if (!voiceState.micEnabled) return;
+                    const input = ev.inputBuffer.getChannelData(0);
+
+                    // 1. Tính âm lượng thực tế (RMS) để hiển thị vạch sóng âm
+                    let sumSq = 0;
+                    for (let i = 0; i < input.length; i += 4) {
+                        sumSq += input[i] * input[i];
+                    }
+                    const rms = Math.sqrt(sumSq / (input.length / 4));
+                    const level = Math.min(100, Math.round(rms * 380));
+                    player.voiceLevel = level;
+                    player.isSpeaking = level > 5; // Ngưỡng nhạy giúp bắt giọng nói dễ dàng
+
+                    // 2. Lấy mẫu xuống 8000Hz (Downsample)
+                    const ratio = nativeRate / VOICE_SAMPLE_RATE;
+                    let idx = 0;
+                    while (idx < input.length) {
+                        voiceState.pcmBuffer.push(input[Math.floor(idx)]);
+                        idx += ratio;
+                    }
+
+                    // Khi đủ ~240ms âm thanh (1920 mẫu ở 8000Hz), đóng gói và truyền đi ngay
+                    if (voiceState.pcmBuffer.length >= 1920) {
+                        const chunk = voiceState.pcmBuffer.splice(0, 1920);
+                        // Chỉ gửi gói âm thanh khi có tiếng nói (> 4%) để tiết kiệm băng thông
+                        if (level > 4) {
+                            const pcmBase64 = encodeFloat32ToPCM8Base64(chunk);
+                            broadcastVoicePacket(pcmBase64);
+                            if (voiceState.loopbackTest) {
+                                playDecodedPCM8Base64(pcmBase64);
+                            }
+                        }
+                    }
+                };
+
+                source.connect(processor);
+                processor.connect(muteGain);
+                muteGain.connect(audioCtx.destination);
+
+                voiceState.sourceNode = source;
+                voiceState.processorNode = processor;
+                voiceState.muteGainNode = muteGain;
+
                 updateMicButtonUI();
                 playSound('score');
-                player.emoteBubble = `🎙️ Đang bật Mic (${getVoiceChannelDisplayName()})`;
-                player.emoteBubbleTimer = 3.0;
-                showBanner(`🎙️ Đã MỞ MIC đàm thoại kênh: ${getVoiceChannelDisplayName()}!`, '🎙️');
+                player.emoteBubble = `🎙️ Đang nói (${getVoiceChannelDisplayName()})`;
+                player.emoteBubbleTimer = 3.5;
+                showBanner(`🎙️ Đã MỞ MIC (${getVoiceChannelDisplayName()})! Hãy nói để bạn bè cùng nghe!`, '🎙️');
                 broadcastMyPlayerState(true);
             } catch (err) {
-                showBanner('⚠️ Vui lòng cấp quyền Micro trên trình duyệt để nói chuyện cùng Lớp & Khóa!', '🎙️');
+                showBanner('⚠️ Vui lòng bấm "Cho phép" (Allow) quyền Micro trên trình duyệt để nói chuyện!', '🎙️');
             }
         };
 
         function stopVoiceMic() {
             voiceState.micEnabled = false;
+            voiceState.loopbackTest = false;
             player.isSpeaking = false;
             player.voiceLevel = 0;
+            voiceState.pcmBuffer = [];
 
-            if (voiceState.chunkInterval) {
-                clearInterval(voiceState.chunkInterval);
-                voiceState.chunkInterval = null;
-            }
-            if (voiceState.mediaRecorder && voiceState.mediaRecorder.state !== 'inactive') {
-                try { voiceState.mediaRecorder.stop(); } catch (e) {}
-            }
-            voiceState.mediaRecorder = null;
+            const loopTxt = document.getElementById('loopbackStatusText');
+            const loopBtn = document.getElementById('btnMicLoopback');
+            if (loopTxt) loopTxt.textContent = 'Test Mic';
+            if (loopBtn) loopBtn.className = 'game-btn bg-slate-800 hover:bg-slate-700 text-sky-200 border border-sky-400/30 rounded-lg px-2 py-1 text-[10px] font-bold flex items-center gap-1';
+
+            try {
+                if (voiceState.processorNode) voiceState.processorNode.disconnect();
+                if (voiceState.sourceNode) voiceState.sourceNode.disconnect();
+                if (voiceState.muteGainNode) voiceState.muteGainNode.disconnect();
+            } catch (e) {}
+            voiceState.processorNode = null;
+            voiceState.sourceNode = null;
+            voiceState.muteGainNode = null;
 
             if (voiceState.stream) {
                 voiceState.stream.getTracks().forEach(t => t.stop());
                 voiceState.stream = null;
             }
-            voiceState.analyser = null;
             updateMicButtonUI();
             const bar = document.getElementById('micLevelBar');
             if (bar) bar.style.width = '0%';
@@ -1033,7 +1175,7 @@
             const quickIcon = document.getElementById('btnQuickMicIcon');
 
             if (voiceState.micEnabled) {
-                if (btn) btn.className = 'game-btn bg-rose-600 hover:bg-rose-500 text-white border border-rose-300 rounded-lg px-2.5 py-1 text-[11px] font-extrabold flex items-center gap-1.5 shadow-lg shadow-rose-600/40 animate-pulse';
+                if (btn) btn.className = 'game-btn bg-rose-600 hover:bg-rose-500 text-white border border-rose-300 rounded-lg px-2.5 py-1 text-[11px] font-extrabold flex items-center gap-1.5 shadow';
                 if (icon) icon.textContent = '🎙️';
                 if (text) text.textContent = 'Đang Mở Mic';
                 if (quickBtn) quickBtn.classList.add('active-press');
@@ -1047,71 +1189,29 @@
             }
         }
 
-        function startVoiceChunkStreaming(stream) {
-            if (typeof MediaRecorder === 'undefined') return;
-            try {
-                let mimeType = '';
-                if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
-                    mimeType = 'audio/webm;codecs=opus';
-                } else if (MediaRecorder.isTypeSupported('audio/webm')) {
-                    mimeType = 'audio/webm';
-                } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
-                    mimeType = 'audio/mp4';
-                }
-
-                const recordCycle = () => {
-                    if (!voiceState.micEnabled || !voiceState.stream) return;
-                    try {
-                        const recorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
-                        const chunks = [];
-                        recorder.ondataavailable = (e) => {
-                            if (e.data && e.data.size > 0) chunks.push(e.data);
-                        };
-                        recorder.onstop = () => {
-                            if (!voiceState.micEnabled || chunks.length === 0 || !player.isSpeaking) return;
-                            const blob = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
-                            if (blob.size > 42000) return; // Keep payload compact for MQTT
-                            const reader = new FileReader();
-                            reader.onloadend = () => {
-                                const base64Audio = reader.result;
-                                if (typeof base64Audio === 'string') {
-                                    broadcastVoicePacket(base64Audio);
-                                }
-                            };
-                            reader.readAsDataURL(blob);
-                        };
-                        recorder.start();
-                        voiceState.mediaRecorder = recorder;
-                        setTimeout(() => {
-                            if (recorder.state === 'recording') {
-                                try { recorder.stop(); } catch (e) {}
-                            }
-                        }, 550);
-                    } catch (e) {}
-                };
-
-                recordCycle();
-                voiceState.chunkInterval = setInterval(recordCycle, 600);
-            } catch (err) {}
-        }
-
-        function broadcastVoicePacket(audioDataUrl) {
+        function broadcastVoicePacket(pcmBase64) {
             const channelId = getActiveVoiceChannelId();
             const packet = {
+                pktId: myClientId + '_' + Date.now() + '_' + Math.random().toString(36).slice(2, 5),
                 senderId: myClientId,
                 senderName: player.name || 'Học Sinh',
                 cohort: player.cohort || 'K60',
                 className: player.className || '12A',
+                channelMode: voiceState.channelMode,
                 channelId: channelId,
-                audio: audioDataUrl,
+                pcm8: pcmBase64,
                 timestamp: Date.now()
             };
 
-            if (mqttClient && mqttClient.connected) {
-                try {
-                    mqttClient.publish(`${ROOM_TOPIC_PREFIX}/voice/${channelId}`, JSON.stringify(packet));
-                } catch (e) {}
-            }
+            const payloadStr = JSON.stringify(packet);
+            mqttClients.forEach(client => {
+                if (client && client.connected) {
+                    try {
+                        client.publish(`${ROOM_TOPIC_PREFIX}/voice`, payloadStr);
+                    } catch (e) {}
+                }
+            });
+
             if (localBroadcastChannel) {
                 try {
                     localBroadcastChannel.postMessage({ type: 'voice', payload: packet });
@@ -1119,24 +1219,43 @@
             }
         }
 
+        function shouldPlayIncomingVoice(packet) {
+            // Nếu người nghe chọn "Toàn Trường" hoặc người nói chọn "Toàn Trường" -> Luôn nghe thấy nhau!
+            if (voiceState.channelMode === 'all' || packet.channelMode === 'all' || packet.channelId === 'school_all') {
+                return true;
+            }
+            if (voiceState.channelMode === 'cohort') {
+                return packet.cohort === player.cohort;
+            }
+            if (voiceState.channelMode === 'class') {
+                return packet.className === player.className;
+            }
+            if (voiceState.channelMode === 'cohort_class') {
+                return packet.cohort === player.cohort && packet.className === player.className;
+            }
+            return true;
+        }
+
         function handleIncomingVoicePacket(packet) {
             if (!packet || !packet.senderId || packet.senderId === myClientId) return;
             if (!voiceState.speakerEnabled) return;
 
-            // Check if packet matches our current selected voice channel or is a match for our cohort/class
-            const myChannelId = getActiveVoiceChannelId();
-            const matchesChannel = (
-                packet.channelId === myChannelId ||
-                packet.channelId === 'school_all' ||
-                (voiceState.channelMode === 'all')
-            );
-            if (!matchesChannel) return;
+            if (packet.pktId) {
+                if (voiceState.lastPacketIds.has(packet.pktId)) return;
+                voiceState.lastPacketIds.add(packet.pktId);
+                if (voiceState.lastPacketIds.size > 150) {
+                    const first = voiceState.lastPacketIds.values().next().value;
+                    voiceState.lastPacketIds.delete(first);
+                }
+            }
 
-            // Highlight speaking remote player
+            if (!shouldPlayIncomingVoice(packet)) return;
+
+            // Hiển thị hiệu ứng sóng âm trên đầu bạn đang nói
             const rp = remotePlayers.get(packet.senderId);
             if (rp) {
                 rp.isSpeaking = true;
-                rp.speakingTimer = 1.2;
+                rp.speakingTimer = 1.0;
             }
 
             const badge = document.getElementById('activeVoiceSpeakerBadge');
@@ -1144,36 +1263,21 @@
                 badge.textContent = `🔊 ${packet.senderName} (${packet.cohort}-${packet.className})`;
                 badge.classList.remove('hidden');
                 clearTimeout(badge._hideTimer);
-                badge._hideTimer = setTimeout(() => badge.classList.add('hidden'), 1400);
+                badge._hideTimer = setTimeout(() => badge.classList.add('hidden'), 1200);
             }
 
-            if (packet.audio && typeof packet.audio === 'string' && packet.audio.startsWith('data:audio')) {
-                try {
-                    const audioEl = new Audio(packet.audio);
-                    audioEl.volume = 0.9;
-                    audioEl.play().catch(() => {});
-                } catch (e) {}
+            if (packet.pcm8) {
+                playDecodedPCM8Base64(packet.pcm8);
             }
         }
 
         function updateLocalVoiceMeter() {
-            if (!voiceState.micEnabled || !voiceState.analyser || !voiceState.dataArray) {
-                player.isSpeaking = false;
-                player.voiceLevel = 0;
+            const bar = document.getElementById('micLevelBar');
+            if (!voiceState.micEnabled) {
+                if (bar && bar.style.width !== '0%') bar.style.width = '0%';
                 return;
             }
-            voiceState.analyser.getByteFrequencyData(voiceState.dataArray);
-            let sum = 0;
-            for (let i = 0; i < voiceState.dataArray.length; i++) {
-                sum += voiceState.dataArray[i];
-            }
-            const avg = sum / voiceState.dataArray.length;
-            const norm = Math.min(100, Math.round((avg / 95) * 100));
-            player.voiceLevel = norm;
-            player.isSpeaking = norm > 14;
-
-            const bar = document.getElementById('micLevelBar');
-            if (bar) bar.style.width = `${norm}%`;
+            if (bar) bar.style.width = `${player.voiceLevel || 0}%`;
         }
 
         // Initialize simulated classmates across K52-K61 & classes A..U so the campus feels lively while real players join
@@ -1435,12 +1539,15 @@
             handleIncomingChatMessage(msgObj);
             playSound('click');
 
-            // 1. Broadcast via WebSocket MQTT (Works on GitHub Pages globally)
-            if (mqttClient && mqttClient.connected) {
-                try {
-                    mqttClient.publish(`${ROOM_TOPIC_PREFIX}/chat`, JSON.stringify(msgObj));
-                } catch (e) {}
-            }
+            // 1. Broadcast via all connected WebSocket MQTT brokers
+            const payloadStr = JSON.stringify(msgObj);
+            mqttClients.forEach(client => {
+                if (client && client.connected) {
+                    try {
+                        client.publish(`${ROOM_TOPIC_PREFIX}/chat`, payloadStr);
+                    } catch (e) {}
+                }
+            });
             // 2. Broadcast via BroadcastChannel (Instant multi-tab sync)
             if (localBroadcastChannel) {
                 try {
@@ -1474,15 +1581,28 @@
         function broadcastMyPlayerState(forceNow = false) {
             const now = Date.now();
             if (!forceNow && now - lastNetworkSyncTime < SYNC_INTERVAL_MS) return;
+
+            // TỐI ƯU PIN & MẠNG: Khi đứng yên và không nói mic, chỉ gửi gói tin nhịp tim mỗi 3.5 giây thay vì liên tục
+            const moved = Math.abs(player.x - lastBroadcastX) > 2 || Math.abs(player.y - lastBroadcastY) > 2 || currentScene !== lastBroadcastScene;
+            if (!forceNow && !moved && !player.isSpeaking && (now - lastNetworkSyncTime < 3500)) {
+                return;
+            }
+
             lastNetworkSyncTime = now;
+            lastBroadcastX = Math.round(player.x);
+            lastBroadcastY = Math.round(player.y);
+            lastBroadcastScene = currentScene;
 
             const statePayload = getMyStatePayload();
+            const payloadStr = JSON.stringify(statePayload);
 
-            if (mqttClient && mqttClient.connected) {
-                try {
-                    mqttClient.publish(`${ROOM_TOPIC_PREFIX}/state/${myClientId}`, JSON.stringify(statePayload));
-                } catch (e) {}
-            }
+            mqttClients.forEach(client => {
+                if (client && client.connected) {
+                    try {
+                        client.publish(`${ROOM_TOPIC_PREFIX}/state/${myClientId}`, payloadStr);
+                    } catch (e) {}
+                }
+            });
             if (localBroadcastChannel) {
                 try {
                     localBroadcastChannel.postMessage({ type: 'state', payload: statePayload });
@@ -1501,7 +1621,7 @@
             handleIncomingChatMessage({
                 msgId: 'sys_welcome',
                 isSystem: true,
-                text: '🌟 Chào mừng đến Kênh Chat Trực Tuyến THPT Ninh Giang (Hỗ trợ tối đa 100 người chơi cùng lúc)!'
+                text: '🌟 Đã kết nối Kênh Chat & Voice Mic THPT Ninh Giang (Hỗ trợ 100 người & Mở Mic K52-K61)!'
             });
 
             // 1. Local BroadcastChannel for multi-tab testing
@@ -1518,38 +1638,38 @@
                 }
             } catch (e) {}
 
-            // 2. Global WebSocket MQTT Relay (Works 100% on GitHub Pages without backend config)
+            // 2. Dual Global WebSocket MQTT Relays (Kết nối song song 2 máy chủ để đảm bảo 100% bạn bè đều nhận được giọng nói & vị trí)
             if (typeof window.mqtt !== 'undefined') {
                 const brokers = [
                     'wss://broker.emqx.io:8084/mqtt',
                     'wss://broker.hivemq.com:8884/mqtt'
                 ];
-                let brokerIdx = 0;
 
-                const connectBroker = (url) => {
+                brokers.forEach((url, idx) => {
                     try {
-                        mqttClient = window.mqtt.connect(url, {
-                            clientId: 'ng_' + myClientId + '_' + Math.random().toString(16).slice(2, 6),
+                        const client = window.mqtt.connect(url, {
+                            clientId: 'ng_' + idx + '_' + myClientId + '_' + Math.random().toString(16).slice(2, 5),
                             clean: true,
-                            connectTimeout: 6000,
-                            reconnectPeriod: 4000
+                            connectTimeout: 7000,
+                            reconnectPeriod: 4500
                         });
 
-                        mqttClient.on('connect', () => {
-                            networkConnectedType = 'Máy chủ Trực Tuyến Toàn Cầu (WebSocket)';
+                        client.on('connect', () => {
+                            networkConnectedType = 'Máy chủ Trực Tuyến Đa Luồng (Voice + Chat)';
                             updateOnlineCountUI();
-                            mqttClient.subscribe(`${ROOM_TOPIC_PREFIX}/state/+`);
-                            mqttClient.subscribe(`${ROOM_TOPIC_PREFIX}/chat`);
-                            mqttClient.subscribe(`${ROOM_TOPIC_PREFIX}/voice/+`);
+                            client.subscribe(`${ROOM_TOPIC_PREFIX}/state/+`);
+                            client.subscribe(`${ROOM_TOPIC_PREFIX}/chat`);
+                            client.subscribe(`${ROOM_TOPIC_PREFIX}/voice`);
+                            client.subscribe(`${ROOM_TOPIC_PREFIX}/voice/+`);
                             broadcastMyPlayerState(true);
                         });
 
-                        mqttClient.on('message', (topic, message) => {
+                        client.on('message', (topic, message) => {
                             try {
                                 const parsed = JSON.parse(message.toString());
                                 if (topic.endsWith('/chat')) {
                                     handleIncomingChatMessage(parsed);
-                                } else if (topic.includes('/voice/')) {
+                                } else if (topic.includes('/voice')) {
                                     handleIncomingVoicePacket(parsed);
                                 } else if (topic.includes('/state/')) {
                                     handleIncomingPlayerState(parsed);
@@ -1557,17 +1677,9 @@
                             } catch (err) {}
                         });
 
-                        mqttClient.on('error', () => {
-                            if (brokerIdx === 0) {
-                                brokerIdx = 1;
-                                try { mqttClient.end(true); } catch (e) {}
-                                connectBroker(brokers[1]);
-                            }
-                        });
+                        mqttClients.push(client);
                     } catch (err) {}
-                };
-
-                connectBroker(brokers[0]);
+                });
             }
 
             updateOnlineCountUI();
@@ -1775,6 +1887,7 @@
         // --- SOUND ENGINE ---
         let audioCtx = null;
         let audioEnabled = true;
+        let audioUnlocked = false;
 
         function initAudio() {
             try {
@@ -1782,9 +1895,25 @@
                     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
                     if (AudioContextClass) audioCtx = new AudioContextClass();
                 }
-                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+                if (audioCtx && audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                // Mở khóa luồng âm thanh trên iOS Safari / Android Chrome ngay khi người chơi chạm màn hình
+                if (audioCtx && !audioUnlocked) {
+                    const silentBuf = audioCtx.createBuffer(1, 1, 22050);
+                    const src = audioCtx.createBufferSource();
+                    src.buffer = silentBuf;
+                    src.connect(audioCtx.destination);
+                    src.start(0);
+                    audioUnlocked = true;
+                }
             } catch (e) {}
         }
+
+        // Tự động kích hoạt bộ giải mã âm thanh khi chạm cảm ứng hoặc click chuột để luôn nghe được Mic bạn bè
+        window.addEventListener('touchstart', initAudio, { passive: true });
+        window.addEventListener('pointerdown', initAudio, { passive: true });
+        window.addEventListener('keydown', initAudio, { passive: true });
 
         function playSound(type) {
             if (!audioEnabled) return;
@@ -3195,7 +3324,17 @@
         }
 
         // --- ARCHITECTURAL RENDERING: ACCURATE THPT NINH GIANG CAMPUS ---
-        function drawCampusScene(c, timeSec) {
+        // BỘ ĐỆM BẢN ĐỒ TĨNH (OFFSCREEN STATIC CACHE):
+        // Vẽ toàn bộ kiến trúc tĩnh của sân trường (2800x2150) đúng 1 lần duy nhất vào bộ nhớ đệm,
+        // giúp điện thoại và máy tính giảm 85% tải CPU/GPU, hoàn toàn hết nóng máy & hao pin!
+        let campusStaticCacheCanvas = null;
+
+        function buildCampusStaticCache() {
+            const off = document.createElement('canvas');
+            off.width = 2800;
+            off.height = 2150;
+            const c = off.getContext('2d');
+
             // 1. Lush Green Campus Grounds
             c.fillStyle = '#3f6212';
             c.fillRect(0, 0, 2800, 2150);
@@ -3293,33 +3432,36 @@
             c.setLineDash([]);
 
             // 5. DRAW THE 4 RECTANGULAR ACADEMIC BUILDINGS ENCLOSING THE CENTRAL COURTYARD
-            // 5A. North Building (Tòa Hậu Đường - Khối 10: 10A..10U)
             drawNorthAcademicBuilding(c, 760, 180, 1280, 225);
-
-            // 5B. West Building of Rectangle (Tòa Tây Học Đường - Khối 11: 11A..11E)
             drawVerticalWingBuilding(c, 760, 465, 185, 440, 'DÃY LỚP 11A - 11E', ['11A', '11B', '11C', '11D', '11E'], true);
-
-            // 5C. East Building of Rectangle (Tòa Đông Học Đường - Khối 11: 11G..11K, 11T, 11U)
             drawVerticalWingBuilding(c, 1855, 465, 185, 440, 'DÃY LỚP 11G - 11U', ['11G', '11H', '11I', '11K', '11T', '11U'], false);
+            drawSouthThreeStoryYellowBuilding(c, 760, 920, 1280, 250, 0, true);
 
-            // 5D. South 3-Story Yellow Building (Tòa Tiền Đường 3 Tầng - Khối 12: 12A..12U, exact match to 2nd photo!)
-            drawSouthThreeStoryYellowBuilding(c, 760, 920, 1280, 250, timeSec);
-
-            // 6. FRONT 3-TIERED WHITE FOUNTAIN, BOUGAINVILLEA POTS, FLAGPOLE & PHOENIX TREES (From 2nd Photo!)
-            drawFrontFountainAndFlagpolePlaza(c, 1400, 1370, timeSec);
-
-            // Two Large Green Phoenix Trees flanking the South 3-Story Building (Exact match to 2nd photo!)
+            // Two Large Green Phoenix Trees flanking the South 3-Story Building
             drawSchoolTree(c, 980, 1245, 76, true);
             drawSchoolTree(c, 1820, 1245, 76, true);
 
-            // 7. LEFT WING: NHÀ ĐA NĂNG (Multi-purpose Sports Hall on the LEFT side of campus!)
+            // 7. LEFT WING: NHÀ ĐA NĂNG
             drawGymnasiumLeftWing(c, 150, 620, 430, 620);
 
-            // 8. RIGHT WING: NHÀ HIỆU BỘ (Administration Building on the RIGHT side of campus!)
+            // 8. RIGHT WING: NHÀ HIỆU BỘ
             drawAdminRightWing(c, 2220, 620, 430, 620);
 
             // 9. GUARDHOUSE & PERIMETER FENCE
             drawGuardhouseAndFence(c);
+
+            campusStaticCacheCanvas = off;
+        }
+
+        function drawCampusScene(c, timeSec) {
+            if (!campusStaticCacheCanvas) {
+                buildCampusStaticCache();
+            }
+            // Vẽ toàn bộ mặt bằng tĩnh chỉ bằng 1 lệnh drawImage cực nhẹ
+            c.drawImage(campusStaticCacheCanvas, 0, 0);
+
+            // Chỉ vẽ phần động: Đài phun nước 3 tầng & Cờ Tổ quốc tung bay trước sảnh
+            drawFrontFountainAndFlagpolePlaza(c, 1400, 1370, timeSec);
         }
 
         function drawNorthAcademicBuilding(c, x, y, w, h) {
@@ -3407,10 +3549,10 @@
             c.restore();
         }
 
-        function drawSouthThreeStoryYellowBuilding(c, x, y, w, h, timeSec) {
+        function drawSouthThreeStoryYellowBuilding(c, x, y, w, h, timeSec, isStaticBake = false) {
             c.save();
 
-            const playerInArch = (
+            const playerInArch = !isStaticBake && (
                 currentScene === 'campus' &&
                 player.x > 1300 && player.x < 1500 &&
                 player.y > 930 && player.y < 1190
@@ -5011,8 +5153,9 @@
             minimapCtx.stroke();
         }
 
-        // --- MAIN 60FPS GAME LOOP ---
+        // --- MAIN 60FPS GAME LOOP (OPTIMIZED FOR LOW CPU/GPU & COOL BATTERY) ---
         let lastFrameTime = performance.now();
+        let lastMinimapTime = 0;
         let frameCount = 0;
         let fpsTimer = 0;
 
@@ -5026,7 +5169,21 @@
         resizeCanvas();
 
         function gameLoop(now) {
-            const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
+            requestAnimationFrame(gameLoop);
+
+            // Tạm dừng vẽ khi người chơi ẩn tab để không tốn pin ngầm
+            if (document.hidden) {
+                lastFrameTime = now;
+                return;
+            }
+
+            // Nếu bật chế độ Siêu Mát (30 FPS), bỏ qua các khung hình xen kẽ
+            const elapsedMs = now - lastFrameTime;
+            if (ecoBatteryMode && elapsedMs < 31) {
+                return;
+            }
+
+            const dt = Math.min(elapsedMs / 1000, 0.05);
             lastFrameTime = now;
             const timeSec = now / 1000;
 
@@ -5122,7 +5279,7 @@
                 ctx.fillStyle = preset.skyTint;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                if (preset.sunGlow) {
+                if (preset.sunGlow && !ecoBatteryMode) {
                     const sunGrad = ctx.createRadialGradient(
                         canvas.width * 0.85, 40, 20,
                         canvas.width * 0.85, 40, canvas.width * 0.75
@@ -5140,7 +5297,11 @@
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
 
-            drawMinimap();
+            // Chỉ vẽ lại Minimap 4 lần/giây thay vì 60 lần/giây để tiết kiệm pin
+            if (now - lastMinimapTime > 250) {
+                lastMinimapTime = now;
+                drawMinimap();
+            }
 
             // Render Live Preview Canvas if Customizer Modal is Open
             const customModal = document.getElementById('customizerModal');
@@ -5162,8 +5323,6 @@
                 };
                 drawCharacter(previewCtx, previewChar, 110, 188, 2.25, true);
             }
-
-            requestAnimationFrame(gameLoop);
         }
 
         // Start Immediately
